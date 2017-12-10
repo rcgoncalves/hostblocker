@@ -1,0 +1,11 @@
+# test list
+
+api.domain.com
+api2.domain.net
+app.domain.org
+beta.domain.info
+email.domain.eu
+domain.com
+
+comment.com  # comment
+   # comment

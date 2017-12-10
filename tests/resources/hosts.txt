@@ -1,0 +1,16 @@
+#                    Hosts List                 #
+#        http://www.domain.com/hosts.txt        #
+#   Last updated: Mon, 01 Dec 01 00:00:00 +0000 #
+
+
+127.0.0.1 localhost
+
+127.0.0.1 api.domain.com
+127.0.0.1 api2.domain.net
+127.0.0.1 app.domain.org
+127.0.0.1 beta.domain.info
+127.0.0.1 email.domain.eu
+127.0.0.0 domain.com
+
+128.0.0.1 comment.com  # comment
+127.0.0.1   # comment

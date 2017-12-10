@@ -1,0 +1,246 @@
+mappers:
+    - 'remove_comments'
+    - 'trim'
+
+filters:
+    - 'is_not_blank'
+    - 'is_not_top_level_domain'
+    - 'is_valid_domain'
+
+sources:
+    # lists
+    - url: 'https://raw.githubusercontent.com/ZeroDot1/CoinBlockerLists/master/list.txt'
+      score: 3
+    - url: 'https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt'
+      score: 3
+      header: 1
+    - url: 'https://s3.amazonaws.com/lists.disconnect.me/simple_malware.txt'
+      score: 3
+      header: 1
+    - url: 'https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt'
+      score: 3
+    - url: 'https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt'
+      score: 3
+    - url: 'https://raw.githubusercontent.com/quidsup/notrack/master/trackers.txt'
+      score: 2
+    - url: 'https://raw.githubusercontent.com/piwik/referrer-spam-blacklist/master/spammers.txt'
+      score: 3
+    - url: 'https://raw.githubusercontent.com/quidsup/notrack/master/trackers.txt'
+      score: 2
+    - url: 'https://raw.githubusercontent.com/Dawsey21/Lists/master/main-blacklist.txt'
+      score: 2
+    # hosts
+    - url: 'https://www.malwaredomainlist.com/hostslist/hosts.txt'
+      score: 3
+      mappers:
+          - 'remove_ip_local'
+    - url: 'https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/win7/spy.txt'
+      score: 3
+      mappers:
+          - 'remove_ip_zero'
+    - url: 'https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/win81/spy.txt'
+      score: 3
+      mappers:
+          - 'remove_ip_zero'
+    - url: 'https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/win10/spy.txt'
+      score: 3
+      mappers:
+          - 'remove_ip_zero'
+    - url: 'https://raw.githubusercontent.com/AdAway/adaway.github.io/master/hosts.txt'
+      score: 2
+      mappers:
+          - 'remove_ip_local'
+    - url: 'https://raw.githubusercontent.com/mitchellkrogza/Badd-Boyz-Hosts/master/hosts'
+      score: 2
+      mappers:
+          - 'remove_ip_zero'
+    - url: 'https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts'
+      score: 3
+      mappers:
+          - 'remove_ip_zero'
+      header: 20
+    - url: 'http://someonewhocares.org/hosts/hosts'
+      score: 2
+      mappers:
+          - 'remove_ip_local'
+      header: 80
+    - url: 'https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/hosts.txt'
+      score: 2
+      mappers:
+          - 'remove_ip_zero'
+    - url: 'https://raw.githubusercontent.com/michaeltrimm/hosts-blocking/master/_hosts.txt'
+      score: 2
+      mappers:
+          - 'remove_ip_zero'
+    - url: 'https://www.hostsfile.org/Downloads/hosts.txt'
+      score: 1
+      mappers:
+          - 'remove_ip_local'
+    # Too big? Download fails.
+    - url: 'https://hosts-file.net/download/hosts.txt'
+      score: 2
+      mappers:
+          - 'remove_ip_local'
+    # adblocks
+    - url: 'https://raw.githubusercontent.com/cpeterso/clickbait-blocklist/master/clickbait-blocklist.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_comments'
+      header: 1
+    - url: 'https://raw.githubusercontent.com/genediazjr/nopelist/master/nopelist.txt'
+      score: 1
+      mappers:
+          - 'remove_adblock_comments'
+      header: 1
+    # unsupported
+    - url: 'https://fanboy.co.nz/fanboy-espanol.txt'
+      score: 1
+      mappers:
+          - 'remove_adblock_text'
+      header: 1
+    - url: 'https://raw.githubusercontent.com/easylist/easylist/master/easylist/easylist_adservers.txt'
+      score: 3
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/easylist/easylist/master/easylist/easylist_adservers_popup.txt'
+      score: 3
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/easylist/easylist/master/easylist/easylist_thirdparty.txt'
+      score: 3
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/easylist/easylist/master/easylist/easylist_thirdparty_popup.txt'
+      score: 3
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/easylist/easylist/master/easyprivacy/easyprivacy_specific.txt'
+      score: 3
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/easylist/easylist/master/easyprivacy/easyprivacy_specific_international.txt'
+      score: 3
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/easylist/easylist/master/easyprivacy/easyprivacy_thirdparty.txt'
+      score: 3
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/easylist/easylist/master/easyprivacy/easyprivacy_thirdparty_international.txt'
+      score: 3
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/easylist/easylist/master/easyprivacy/easyprivacy_trackingservers.txt'
+      score: 3
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/easylist/easylist/master/easyprivacy/easyprivacy_trackingservers_international.txt'
+      score: 3
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://fanboy.co.nz/enhancedstats.txt'
+      score: 1
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/badware.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/privacy.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/resource-abuse.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardDNS/master/Filters/filter.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/SpywareFilter/sections/specific.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/SpywareFilter/sections/tracking_servers.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/SpywareFilter/sections/tracking_servers_firstparty.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/SpanishFilter/sections/adservers.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/SpanishFilter/sections/specific.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/SocialFilter/sections/social_trackers.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/MobileFilter/sections/adservers.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/MobileFilter/sections/spyware.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/EnglishFilter/sections/adservers.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/EnglishFilter/sections/adservers_firstparty.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/EnglishFilter/sections/foreign.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/EnglishFilter/sections/specific.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/AnnoyancesFilter/sections/popups.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/AnnoyancesFilter/sections/push-notifications.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/AnnoyancesFilter/sections/widgets.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'http://gnuzilla.gnu.org/filters/blacklist.txt'
+      score: 2
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/IDKwhattoputhere/uBlock-Filters-Plus/master/uBlock-Filters-Plus.txt'
+      score: 1
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/jspenguin2017/uBlockProtector/master/uBlockProtectorList.txt'
+      score: 1
+      mappers:
+          - 'remove_adblock_text'
+    # others
+    - url: 'file:///System/Library/PrivateFrameworks/FamilyControls.framework/Resources/adhosts.plist'
+      score: 3
+      mappers:
+          - 'remove_xml_tags'
+      header: 2
+    - url: 'https://www.squidblacklist.org/downloads/squid-ads.acl'
+      score: 3
+      mappers:
+          - 'remove_dot'

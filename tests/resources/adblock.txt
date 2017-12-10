@@ -1,0 +1,32 @@
+# https://github.com/_x_y_z_/_x_y_z/
+# Last updated: 2000-01-01
+google.*###tads.c
+google.*##.commercial-unit-desktop-top
+google.*##.commercial-unit-mobile-top
+
+# ...
+google.*###sqh
+
+! ...
+! ...
+youtube.com##.ad-div
+youtube.com###promotion-shelf
+
+# https://github.com/
+||domain.com^
+
+# ...
+||domain.net^$popup
+
+# comment
+||domain.org^$document,popup
+||domain.eu^$popup
+||domain.cc^$third-party
+
+! ... comment
+||xyz.com^$document
+||xyz.domain.com/assets/js/script,important
+||partner.domain.com^$script,important,domain=xyz.com
+
+! ...
+x.domain.com##script:inject(video.tv.js)
