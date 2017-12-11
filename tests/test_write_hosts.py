@@ -1,8 +1,8 @@
-import unittest
+import io
+import logging
 import os
 import tempfile
-import logging
-from io import TextIOWrapper
+import unittest
 from typing import List
 
 import builder.write_hosts
@@ -20,7 +20,7 @@ class TestWriteHosts(unittest.TestCase):
               '1.2.3.4   app.domain.com']
 
     @staticmethod
-    def read_entries(file: TextIOWrapper) -> List[str]:
+    def read_entries(file: io.TextIOWrapper) -> List[str]:
         """
         Returns the lines of a text file.
 

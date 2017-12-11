@@ -1,5 +1,5 @@
+import io
 import logging
-from io import TextIOWrapper
 from typing import DefaultDict, Set
 
 
@@ -35,14 +35,14 @@ def write_hosts(
             result += write_hosts_list(hosts_list, file)
             file.write('### END HostBlocker Block List\n')
     except IOError:
-        logging.exception('IO error')
+        logging.exception('IO error writing hosts')
         result += 1
     return result
 
 
 def write_header(
         header: str,
-        file: TextIOWrapper) -> int:
+        file: io.TextIOWrapper) -> int:
     """
     Writes the header to the file.
 
@@ -57,14 +57,14 @@ def write_header(
             if not contents[-1].isspace():
                 file.write('\n')
     except IOError:
-        logging.exception('IO error')
+        logging.exception('IO error writing header')
         return 1
     return 0
 
 
 def write_hosts_list(
         hosts_list: Set[str],
-        file: TextIOWrapper) -> int:
+        file: io.TextIOWrapper) -> int:
     """
     Writes the list of hosts to a file.
 
@@ -76,6 +76,6 @@ def write_hosts_list(
         for host in hosts_list:
             file.write('0.0.0.0 ' + host + '\n')
     except IOError:
-        logging.exception('IO error')
+        logging.exception('IO error writing hosts list')
         return 1
     return 0

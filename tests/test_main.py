@@ -1,10 +1,10 @@
-import unittest
-import sys
-import os
-import os.path
 import logging
+import os
+import sys
+import unittest
 
 import builder.main
+
 
 DEBUG_LOG = 'debug.log'
 
@@ -22,6 +22,7 @@ class TestMain(unittest.TestCase):
         self.assertEqual(args.whitelist, '')
         self.assertEqual(args.blacklist, '')
         self.assertEqual(args.score, 4)
+        self.assertEqual(args.cache, 60)
         self.assertEqual(args.debug, '')
 
     def test_init_args_all_short(self):
@@ -32,6 +33,7 @@ class TestMain(unittest.TestCase):
                     '-w', 'whitelist',
                     '-b', 'blacklist',
                     '-t', '1',
+                    '-c', '1',
                     '-d', 'debug.log']
         args = builder.main.init_args()
         self.assertEqual(args.config, 'sources.yml')
@@ -40,6 +42,7 @@ class TestMain(unittest.TestCase):
         self.assertEqual(args.whitelist, 'whitelist')
         self.assertEqual(args.blacklist, 'blacklist')
         self.assertEqual(args.score, 1)
+        self.assertEqual(args.cache, 1)
         self.assertEqual(args.debug, 'debug.log')
 
     def test_init_args_all_long(self):
@@ -50,6 +53,7 @@ class TestMain(unittest.TestCase):
                     '--whitelist', 'whitelist',
                     '--blacklist', 'blacklist',
                     '--threshold', '1',
+                    '--cache', '1',
                     '--debug', 'debug.log']
         args = builder.main.init_args()
         self.assertEqual(args.config, 'sources.yml')
@@ -58,6 +62,7 @@ class TestMain(unittest.TestCase):
         self.assertEqual(args.whitelist, 'whitelist')
         self.assertEqual(args.blacklist, 'blacklist')
         self.assertEqual(args.score, 1)
+        self.assertEqual(args.cache, 1)
         self.assertEqual(args.debug, 'debug.log')
 
     def test_init_logging(self):

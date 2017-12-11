@@ -1,12 +1,10 @@
+import collections
 import logging
-from urllib.error import HTTPError
-from urllib.error import URLError
-from collections import defaultdict
 from typing import DefaultDict, Union, List
 
+import datasrc.fetch
 import datasrc.filters
 import datasrc.mappers
-from datasrc.fetch import get_lines
 
 
 def apply_blacklist(
@@ -34,7 +32,7 @@ def apply_blacklist(
                                       domain, hosts[domain])
                     hosts[domain] = 9999
         except IOError:
-            logging.exception('IO error')
+            logging.exception('IO error applying blacklist')
     return hosts
 
 
@@ -62,36 +60,37 @@ def apply_whitelist(
                                       domain, hosts[domain])
                     hosts[domain.rstrip()] = 0
         except IOError:
-            logging.exception('IO error')
+            logging.exception('IO error applying whitelist')
     return hosts
 
 
-def build_from_sources(config: Union[dict, list, None]) -> DefaultDict[str, int]:
+def build_from_sources(
+        config: Union[dict, list, None],
+        cache: int=0) -> DefaultDict[str, int]:
     """
     Builds the initial hosts map from the sources list, that associates a score to each host domain
     read.
 
     :param config: the sources configuration read from the YAML file.
+    :param cache: number of hours to cache files.
     :return: the hosts map.
     """
     # dictionary where values have value 0 by default
-    hosts = defaultdict(int)
+    hosts = collections.defaultdict(int)
     for item in config['sources']:
-        logging.info('processing list URL %s', item['url'])
-        try:
-            lines = get_lines(item['url'])
-            if 'header' in item:
-                logging.debug('discarding %d header lines', item['header'])
-                del lines[:item['header']]
-            mappers = config['mappers']
-            if 'mappers' in item:
-                mappers = item['mappers'] + mappers
-            filters = config['filters']
-            if 'filters' in item:
-                filters = item['filters'] + filters
-            hosts = process_lines(lines, hosts, mappers, filters, item['score'])
-        except (HTTPError, URLError):
-            logging.exception('HTTP error for %s', item['url'])
+        url = item['url']
+        logging.info('processing list URL %s', url)
+        lines = datasrc.fetch.get_lines(url, cache)
+        if 'header' in item:
+            logging.debug('discarding %d header lines', item['header'])
+            del lines[:item['header']]
+        mappers = config['mappers']
+        if 'mappers' in item:
+            mappers = item['mappers'] + mappers
+        filters = config['filters']
+        if 'filters' in item:
+            filters = item['filters'] + filters
+        hosts = process_lines(lines, hosts, mappers, filters, item['score'])
     return hosts
 
 

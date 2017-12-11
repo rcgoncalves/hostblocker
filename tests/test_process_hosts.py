@@ -1,11 +1,11 @@
-import unittest
-import os
+import collections
 import logging
-from collections import defaultdict
+import os
+import unittest
 
 import builder.process_hosts
-from datasrc.fetch import get_lines
-from datasrc.filters import is_valid_domain
+import datasrc.fetch
+import datasrc.filters
 
 
 class TestProcessHosts(unittest.TestCase):
@@ -15,30 +15,30 @@ class TestProcessHosts(unittest.TestCase):
     dir_path = os.path.dirname(os.path.abspath(__file__))
 
     def test_process_lines_hosts(self):
-        lines = get_lines('file://' + str(self.dir_path) + '/resources/hosts.txt')
-        hosts = defaultdict(int)
+        lines = datasrc.fetch.get_lines('file://' + str(self.dir_path) + '/resources/hosts.txt')
+        hosts = collections.defaultdict(int)
         hosts = builder.process_hosts.process_lines(lines, hosts,
                                                     ['remove_ip_local', 'remove_comments', 'trim'],
                                                     ['is_not_blank', 'is_valid_domain'])
         self.assertEqual(len(hosts), 6)
         for key in hosts:
             self.assertTrue(key)
-            self.assertTrue(is_valid_domain(key))
+            self.assertTrue(datasrc.filters.is_valid_domain(key))
 
     def test_process_lines_list(self):
-        lines = get_lines('file://' + str(self.dir_path) + '/resources/list.txt')
-        hosts = defaultdict(int)
+        lines = datasrc.fetch.get_lines('file://' + str(self.dir_path) + '/resources/list.txt')
+        hosts = collections.defaultdict(int)
         hosts = builder.process_hosts.process_lines(lines, hosts,
                                                     ['remove_comments', 'trim'],
                                                     ['is_not_blank'])
         self.assertEqual(len(hosts), 7)
         for key in hosts:
             self.assertTrue(key)
-            self.assertTrue(is_valid_domain(key))
+            self.assertTrue(datasrc.filters.is_valid_domain(key))
 
     def test_process_lines_adblock(self):
-        lines = get_lines('file://' + str(self.dir_path) + '/resources/adblock.txt')
-        hosts = defaultdict(int)
+        lines = datasrc.fetch.get_lines('file://' + str(self.dir_path) + '/resources/adblock.txt')
+        hosts = collections.defaultdict(int)
         hosts = builder.process_hosts.process_lines(lines, hosts,
                                                     ['remove_adblock_text',
                                                      'remove_adblock_comments'],
@@ -46,22 +46,22 @@ class TestProcessHosts(unittest.TestCase):
         self.assertEqual(len(hosts), 6)
         for key in hosts:
             self.assertTrue(key)
-            self.assertTrue(is_valid_domain(key))
+            self.assertTrue(datasrc.filters.is_valid_domain(key))
 
     def test_process_lines_list_invalid(self):
-        lines = get_lines('file://' + str(self.dir_path) + '/resources/list.txt')
-        hosts = defaultdict(int)
+        lines = datasrc.fetch.get_lines('file://' + str(self.dir_path) + '/resources/list.txt')
+        hosts = collections.defaultdict(int)
         hosts = builder.process_hosts.process_lines(lines, hosts,
                                                     ['remove_comments', '_invalid_', 'trim'],
                                                     ['is_not_blank', '_invalid_'])
         self.assertEqual(len(hosts), 7)
         for key in hosts:
             self.assertTrue(key)
-            self.assertTrue(is_valid_domain(key))
+            self.assertTrue(datasrc.filters.is_valid_domain(key))
 
     def test_apply_whitelist(self):
-        lines = get_lines('file://' + str(self.dir_path) + '/resources/list.txt')
-        hosts = defaultdict(int)
+        lines = datasrc.fetch.get_lines('file://' + str(self.dir_path) + '/resources/list.txt')
+        hosts = collections.defaultdict(int)
         hosts = builder.process_hosts.process_lines(lines, hosts,
                                                     ['remove_comments'],
                                                     ['is_not_blank'])
@@ -75,14 +75,14 @@ class TestProcessHosts(unittest.TestCase):
 
     def test_apply_whitelist_error(self):
         with self.assertLogs(level=logging.ERROR):
-            hosts = defaultdict(int)
+            hosts = collections.defaultdict(int)
             hosts = builder.process_hosts.apply_whitelist(hosts,
                                                           str(self.dir_path) + '/resources/none')
             self.assertEqual(len(hosts), 0)
 
     def test_apply_blacklist(self):
-        lines = get_lines('file://' + str(self.dir_path) + '/resources/list.txt')
-        hosts = defaultdict(int)
+        lines = datasrc.fetch.get_lines('file://' + str(self.dir_path) + '/resources/list.txt')
+        hosts = collections.defaultdict(int)
         hosts = builder.process_hosts.process_lines(lines, hosts,
                                                     ['remove_comments'],
                                                     ['is_not_blank'])
@@ -96,7 +96,7 @@ class TestProcessHosts(unittest.TestCase):
 
     def test_apply_blacklist_error(self):
         with self.assertLogs(level=logging.ERROR):
-            hosts = defaultdict(int)
+            hosts = collections.defaultdict(int)
             hosts = builder.process_hosts.apply_blacklist(hosts,
                                                           str(self.dir_path) + '/resources/none')
             self.assertEqual(len(hosts), 0)

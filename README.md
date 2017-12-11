@@ -1,5 +1,4 @@
 # HostBlocker: Host File Domain Blocker Builder
-
 *HostBlocker* is an application that builds `/etc/hosts` files to block known *problematic* domains (e.g., associated to Spam, malware, tracking).
 It takes a configuration file with multiple lists of such domains, and builds an unified file, with the expected format.
 Moreover, it allows to specify an additional blacklists, a whitelist, and a custom header.
@@ -11,15 +10,18 @@ That is, for each line of a list, first a sequence of mapper functions is applie
 Moreover, each list has associated a score, and only domains for which the sum of scores from the different lists is above a certain threshold are used.
 This allows users to use less reliable lists, without risking blocking wrong domains (assigning a low score to the list, we make sure the domain is blocked only if it appears in other lists too).
 
-## Installation
+This application caches the downloaded files for a configurable amount of time (60 hours by default), to avoid downloading the file to often.
+The cache directory can be specified with the environment variable `HOSTBLOCKER_CACHE_PATH` (uses relative directory `cache` by default).
 
+
+## Installation
 To install this application simply run the command `python setup.py install`.
 This will make the command `hostblocker` available.
 
 This application requires Python 3, and the Python package `yaml`. 
 
-## Usage
 
+## Usage
 The application supports the following options:
 - `-s`/`--source`: path to the YAML sources list (default: `config/sources.yml`).
 - `-o`/`--output`: path to output file (default: `hosts`).
@@ -27,10 +29,10 @@ The application supports the following options:
 - `-w`/`--whitlist`: path to the whitelist (domains that are never blocked).
 - `-b`/`--blacklist`: path to the black list (additional domains to block).
 - `-t`/`--threashold`: score threshold to block a domain (default: 4).
+- `-c`/`--cache`: number of hours to cache files (default: 60)
 
 
 ## Sources List
-
 The source lists are defined in a YAML file, which contains the list of source URLs (and their properties), as well as the global mappers and filters.
 
 ### List of URLs
@@ -44,22 +46,22 @@ Additionally, each item may have the following optional properties:
 - `filters`: the sequence of filters to apply to each line of the file (the order only affects performance).
 - `header`: the number of header lines the file contains, and that should be discarded.
 
-
 ### Global Mappers and Filters
 Besides the mappers and filters specified for each source list, global mappers and filters (i.e., to apply to all lists) can also be specified with the top level entries `mappers` and `filters`.
 These functions are applied after the functions specific to the source list.
 
+
 ## TODO
-- Cache downloaded files for a configurable period of time.
 - Check if domains are still active.
-- Support other output formats (support DNSMasq with wildcard domains).
-- Improve source lists encoding support.
+- Support other output formats (support DNSMasq configuration file).
+- Improve source lists encoding support (namely, allow compressed files).
+
 
 ## Author
 Rui Carlos Gonçalves <rcgoncalves.pt@gmail.com>
 
-## License
 
+## License
 *HostBlocker* is free software, distributed under the terms of the [GNU] General
 Public License as published by the Free Software Foundation,
 version 3 of the License (or any later version).  For more information,

@@ -1,8 +1,8 @@
 #!/usr/local/bin/python3
 
 import argparse
-import yaml
 import logging
+import yaml
 
 import builder.process_hosts
 import builder.write_hosts
@@ -54,6 +54,9 @@ def init_args():
     parser.add_argument('-t', '--threshold', type=int,
                         help='Score threshold to block domains',
                         required=False, default=4, dest='score')
+    parser.add_argument('-c', '--cache', type=int,
+                        help='Number of hours to cache file',
+                        required=False, default=60, dest='cache')
     parser.add_argument('-d', '--debug',
                         help=argparse.SUPPRESS,  # Enable debug output with the given file
                         required=False, default='', dest='debug')
@@ -76,14 +79,15 @@ def main() -> int:
     logging.debug('whitelist file: %s', args.whitelist)
     logging.debug('blacklist file: %s', args.blacklist)
     logging.debug('minimum score: %d', args.score)
+    logging.debug('max cache: %d', args.cache)
     config = None
     with open(args.config, 'r') as stream:
         try:
             config = yaml.load(stream)
-        except yaml.YAMLError as exc:
-            print(exc)
+        except yaml.YAMLError:
+            logging.exception('error reading sources YAML')
             exit(1)
-    hosts = builder.process_hosts.build_from_sources(config)
+    hosts = builder.process_hosts.build_from_sources(config, args.cache)
     hosts = builder.process_hosts.apply_blacklist(hosts, args.blacklist, args.score)
     hosts = builder.process_hosts.apply_whitelist(hosts, args.whitelist, args.score)
     builder.write_hosts.write_hosts(hosts, args.header, args.out, args.score)
