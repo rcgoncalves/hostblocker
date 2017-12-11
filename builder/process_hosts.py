@@ -2,7 +2,7 @@ import collections
 import logging
 from typing import DefaultDict, Union, List
 
-import datasrc.fetch
+import builder.fetch
 import datasrc.filters
 import datasrc.mappers
 
@@ -80,7 +80,7 @@ def build_from_sources(
     for item in config['sources']:
         url = item['url']
         logging.info('processing list URL %s', url)
-        lines = datasrc.fetch.get_lines(url, cache)
+        lines = builder.fetch.get_lines(url, cache)
         if 'header' in item:
             logging.debug('discarding %d header lines', item['header'])
             del lines[:item['header']]

@@ -2,7 +2,7 @@ import hashlib
 import logging
 import os
 import time
-import urllib
+import urllib.request
 from typing import List, Union
 
 
