@@ -4,6 +4,7 @@ from datasrc import ADBLOCK_MATCH_POP
 from datasrc import ADBLOCK_MATCH_DOC
 from datasrc import ADBLOCK_MATCH_POP_3RD
 from datasrc import ADBLOCK_MATCH_DOC_POP
+from datasrc import IP
 from datasrc import XML_TAG_MATCH
 
 
@@ -82,19 +83,22 @@ def remove_adblock_text(line: str) -> str:
     :return: the domain obtained from the line (or an empty line).
     """
     if ADBLOCK_MATCH.match(line):
-        return line[2:-1]
+        line = line[2:-1]
     elif ADBLOCK_MATCH_3RD.match(line):
-        return line[2:-13]
+        line = line[2:-13]
     elif ADBLOCK_MATCH_POP.match(line):
-        return line[2:-7]
+        line = line[2:-7]
     elif ADBLOCK_MATCH_DOC.match(line):
-        return line[2:-10]
+        line = line[2:-10]
     elif ADBLOCK_MATCH_POP_3RD.match(line):
-        return line[2:-19]
+        line = line[2:-19]
     elif ADBLOCK_MATCH_DOC_POP.match(line):
-        return line[2:-16]
+        line = line[2:-16]
     else:
-        return ''
+        line = ''
+    if line.count('*') > 0 or line.count('/') > 0 or IP.match(line):
+        line = ''
+    return line
 
 
 def remove_xml_tags(line: str) -> str:
