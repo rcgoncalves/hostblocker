@@ -62,7 +62,7 @@ setup(
     url='https://rcgoncalves.pt/project/hostblocker/',
     license='GPL v3',
     packages=find_packages(exclude=['tests']),
-    entry_points={'console_scripts': ['hostblocker = builder.main:main']},
+    entry_points={'console_scripts': ['hostblocker = hostblocker.main:main']},
     test_suite='setup.test_suite',
     install_requires=['PyYAML', 'coverage'],
 )

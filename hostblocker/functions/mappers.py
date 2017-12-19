@@ -1,11 +1,11 @@
-from datasrc import ADBLOCK_MATCH
-from datasrc import ADBLOCK_MATCH_3RD
-from datasrc import ADBLOCK_MATCH_POP
-from datasrc import ADBLOCK_MATCH_DOC
-from datasrc import ADBLOCK_MATCH_POP_3RD
-from datasrc import ADBLOCK_MATCH_DOC_POP
-from datasrc import IP
-from datasrc import XML_TAG_MATCH
+from hostblocker.functions import ADBLOCK_MATCH
+from hostblocker.functions import ADBLOCK_MATCH_3RD
+from hostblocker.functions import ADBLOCK_MATCH_DOC
+from hostblocker.functions import ADBLOCK_MATCH_DOC_POP
+from hostblocker.functions import ADBLOCK_MATCH_POP
+from hostblocker.functions import ADBLOCK_MATCH_POP_3RD
+from hostblocker.functions import IP
+from hostblocker.functions import XML_TAG_MATCH
 
 
 def remove_comments(line: str) -> str:

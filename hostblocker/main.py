@@ -2,10 +2,11 @@
 
 import argparse
 import logging
+
 import yaml
 
-import builder.process_hosts
-import builder.write_hosts
+import hostblocker.builder
+import hostblocker.writer.hosts
 
 
 def init_logging(debug: str) -> logging.Logger:
@@ -87,10 +88,10 @@ def main() -> int:
         except yaml.YAMLError:
             logging.exception('error reading sources YAML')
             exit(1)
-    hosts = builder.process_hosts.build_from_sources(config, args.cache)
-    hosts = builder.process_hosts.apply_blacklist(hosts, args.blacklist, args.score)
-    hosts = builder.process_hosts.apply_whitelist(hosts, args.whitelist, args.score)
-    builder.write_hosts.write_hosts(hosts, args.header, args.out, args.score)
+    hosts = hostblocker.builder.build_from_sources(config, args.cache)
+    hosts = hostblocker.builder.apply_blacklist(hosts, args.blacklist, args.score)
+    hosts = hostblocker.builder.apply_whitelist(hosts, args.whitelist, args.score)
+    hostblocker.writer.hosts.write(hosts, args.header, args.out, args.score)
     return 0
 
 

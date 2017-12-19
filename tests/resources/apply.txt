@@ -1,2 +1,2 @@
-domain.com
-app.domain.com
+example.com
+app.example.com

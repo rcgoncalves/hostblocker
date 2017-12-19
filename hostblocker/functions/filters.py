@@ -1,7 +1,7 @@
 import logging
 
-from datasrc import DOMAIN_SEG_MATCH
-from datasrc import DOMAIN_ALPHA
+from hostblocker.functions import DOMAIN_SEG_MATCH
+from hostblocker.functions import DOMAIN_ALPHA
 
 
 def is_not_blank(line: str) -> bool:

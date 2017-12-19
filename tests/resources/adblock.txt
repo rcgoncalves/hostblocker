@@ -13,22 +13,22 @@ youtube.com##.ad-div
 youtube.com###promotion-shelf
 
 # https://github.com/
-||domain.com^
-||*.domain.com^
+||example.com^
+||*.example.com^
 ||1.1.1.1^
 
 # ...
-||domain.net^$popup
+||example.net^$popup
 
 # comment
-||domain.org^$document,popup
-||domain.eu^$popup
-||domain.cc^$third-party
+||example.org^$document,popup
+||example.eu^$popup
+||example.cc^$third-party
 
 ! ... comment
 ||xyz.com^$document
-||xyz.domain.com/assets/js/script,important
-||partner.domain.com^$script,important,domain=xyz.com
+||xyz.example.com/assets/js/script,important
+||partner.example.com^$script,important,example=xyz.com
 
 ! ...
-x.domain.com##script:inject(video.tv.js)
+x.example.com##script:inject(video.tv.js)

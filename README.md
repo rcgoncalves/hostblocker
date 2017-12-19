@@ -54,6 +54,8 @@ These functions are applied after the functions specific to the source list.
 ## TODO
 - Check if domains are still active.
 - Support other output formats (support DNSMasq configuration file).
+- Allow more configurations for output file (e.g. which IP to redirec to in `/etc/hosts`?; which response provide with DNSMasq?).
+- Change YAML from sources to config file.
 - Improve source lists encoding support (namely, allow compressed files).
 
 

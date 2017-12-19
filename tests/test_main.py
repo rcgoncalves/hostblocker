@@ -3,8 +3,7 @@ import os
 import sys
 import unittest
 
-import builder.main
-
+import hostblocker.main
 
 DEBUG_LOG = 'debug.log'
 
@@ -15,7 +14,7 @@ class TestMain(unittest.TestCase):
     """
     def test_init_args_defaults(self):
         sys.argv = ['hostblocker']
-        args = builder.main.init_args()
+        args = hostblocker.main.init_args()
         self.assertEqual(args.config, 'config/sources.yml')
         self.assertEqual(args.out, 'hosts')
         self.assertEqual(args.header, '')
@@ -35,7 +34,7 @@ class TestMain(unittest.TestCase):
                     '-t', '1',
                     '-c', '1',
                     '-d', 'debug.log']
-        args = builder.main.init_args()
+        args = hostblocker.main.init_args()
         self.assertEqual(args.config, 'sources.yml')
         self.assertEqual(args.out, 'out')
         self.assertEqual(args.header, 'header')
@@ -55,7 +54,7 @@ class TestMain(unittest.TestCase):
                     '--threshold', '1',
                     '--cache', '1',
                     '--debug', 'debug.log']
-        args = builder.main.init_args()
+        args = hostblocker.main.init_args()
         self.assertEqual(args.config, 'sources.yml')
         self.assertEqual(args.out, 'out')
         self.assertEqual(args.header, 'header')
@@ -66,12 +65,12 @@ class TestMain(unittest.TestCase):
         self.assertEqual(args.debug, 'debug.log')
 
     def test_init_logging(self):
-        root_logger = builder.main.init_logging('')
+        root_logger = hostblocker.main.init_logging('')
         self.assertTrue(len(root_logger.handlers) > 0)
         self.assertEqual(root_logger.handlers[0].level, logging.ERROR)
 
     def test_init_logging_debug(self):
-        root_logger = builder.main.init_logging(DEBUG_LOG)
+        root_logger = hostblocker.main.init_logging(DEBUG_LOG)
         self.assertTrue(len(root_logger.handlers) > 1)
         self.assertEqual(root_logger.handlers[0].level, logging.ERROR)
         self.assertEqual(root_logger.handlers[1].level, logging.DEBUG)

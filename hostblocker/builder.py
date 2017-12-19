@@ -2,9 +2,9 @@ import collections
 import logging
 from typing import DefaultDict, Union, List
 
-import builder.fetch
-import datasrc.filters
-import datasrc.mappers
+import hostblocker.functions.filters
+import hostblocker.functions.mappers
+import hostblocker.reader.fetch
 
 
 def apply_blacklist(
@@ -80,7 +80,7 @@ def build_from_sources(
     for item in config['sources']:
         url = item['url']
         logging.info('processing list URL %s', url)
-        lines = builder.fetch.get_lines(url, cache)
+        lines = hostblocker.reader.fetch.get_lines(url, cache)
         if 'header' in item:
             logging.debug('discarding %d header lines', item['header'])
             del lines[:item['header']]
@@ -112,14 +112,14 @@ def process_lines(
     """
     for mapper in mappers[:]:
         try:
-            getattr(datasrc.mappers, mapper)
+            getattr(hostblocker.functions.mappers, mapper)
         except AttributeError:
             logging.warning('invalid mapper: %s', mapper)
             mappers.remove(mapper)
     logging.debug('mappers: %s', str(mappers))
     for filterr in filters[:]:
         try:
-            getattr(datasrc.filters, filterr)
+            getattr(hostblocker.functions.filters, filterr)
         except AttributeError:
             logging.warning('invalid filter: %s', filterr)
             filters.remove(filterr)
@@ -148,7 +148,7 @@ def map_line(
     """
     if mappers:
         for f in mappers:
-            line = getattr(datasrc.mappers, f)(line)
+            line = getattr(hostblocker.functions.mappers, f)(line)
     return line
 
 
@@ -165,6 +165,6 @@ def filter_line(
     """
     if filters:
         for f in filters:
-            if not getattr(datasrc.filters, f)(line):
+            if not getattr(hostblocker.functions.filters, f)(line):
                 return False
     return True
