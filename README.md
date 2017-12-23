@@ -1,4 +1,4 @@
-# HostBlocker: Host File Domain Blocker Builder
+# HostBlocker: Domain Blocker File Builder
 *HostBlocker* is an application that builds lists to block known *problematic* domains (e.g., associated to Spam, malware, tracking).
 It takes a configuration file with multiple lists of such domains, and builds an unified file, with a configurable format (currently it supports `/etc/hosts` and Dnsmasq formats).
 Moreover, it allows to specify an additional blacklists, a whitelist, and a custom header.
@@ -69,7 +69,7 @@ These functions are applied after the functions specific to the source list.
 
 
 ## Author
-Rui Carlos Gonçalves <rcgoncalves.pt@gmail.com>
+Rui Carlos Gonçalves (rcgoncalves.pt@gmail.com)
 
 
 ## License
