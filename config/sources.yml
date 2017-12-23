@@ -235,11 +235,6 @@ sources:
       mappers:
           - 'remove_adblock_text'
     # others
-    - url: 'file:///System/Library/PrivateFrameworks/FamilyControls.framework/Resources/adhosts.plist'
-      score: 3
-      mappers:
-          - 'remove_xml_tags'
-      header: 2
     - url: 'https://www.squidblacklist.org/downloads/squid-ads.acl'
       score: 3
       mappers:
