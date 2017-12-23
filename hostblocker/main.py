@@ -1,12 +1,11 @@
 #!/usr/local/bin/python3
 
 import argparse
+import importlib
 import logging
-
 import yaml
 
 import hostblocker.builder
-import hostblocker.writer.hosts
 
 
 def init_logging(debug: str) -> logging.Logger:
@@ -43,6 +42,9 @@ def init_args():
     parser.add_argument('-o', '--output',
                         help='Output file',
                         required=False, default='hosts', dest='out')
+    parser.add_argument('-f', '--format',
+                        help='Specifies the output format (hosts or dnsmasq)',
+                        required=False, default='hosts', dest='format')
     parser.add_argument('-p', '--header',
                         help='Header for the output file',
                         required=False, default='', dest='header')
@@ -76,6 +78,7 @@ def main() -> int:
     init_logging(args.debug)
     logging.debug('config file: %s', args.config)
     logging.debug('output file: %s', args.out)
+    logging.debug('format: %s', args.format)
     logging.debug('header file: %s', args.header)
     logging.debug('whitelist file: %s', args.whitelist)
     logging.debug('blacklist file: %s', args.blacklist)
@@ -91,7 +94,12 @@ def main() -> int:
     hosts = hostblocker.builder.build_from_sources(config, args.cache)
     hosts = hostblocker.builder.apply_blacklist(hosts, args.blacklist, args.score)
     hosts = hostblocker.builder.apply_whitelist(hosts, args.whitelist, args.score)
-    hostblocker.writer.hosts.write(hosts, args.header, args.out, args.score)
+    try:
+        mod = importlib.import_module('hostblocker.writer.' + args.format)
+        mod.write(hosts, args.header, args.out, args.score)
+    except ModuleNotFoundError:
+        logging.error('invalid output format: %s', args.format)
+        exit(2)
     return 0
 
 

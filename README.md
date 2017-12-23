@@ -1,6 +1,6 @@
 # HostBlocker: Host File Domain Blocker Builder
-*HostBlocker* is an application that builds `/etc/hosts` files to block known *problematic* domains (e.g., associated to Spam, malware, tracking).
-It takes a configuration file with multiple lists of such domains, and builds an unified file, with the expected format.
+*HostBlocker* is an application that builds lists to block known *problematic* domains (e.g., associated to Spam, malware, tracking).
+It takes a configuration file with multiple lists of such domains, and builds an unified file, with a configurable format (currently it supports `/etc/hosts` and Dnsmasq formats).
 Moreover, it allows to specify an additional blacklists, a whitelist, and a custom header.
 
 Each source list may have a different format.
@@ -18,13 +18,14 @@ The cache directory can be specified with the environment variable `HOSTBLOCKER_
 To install this application simply run the command `python setup.py install`.
 This will make the command `hostblocker` available.
 
-This application requires Python 3, and the Python package `yaml`. 
+This application requires Python 3, and the Python package `yaml`, `setuptools`, and `coverage`.
 
 
 ## Usage
 The application supports the following options:
 - `-s`/`--source`: path to the YAML sources list (default: `config/sources.yml`).
 - `-o`/`--output`: path to output file (default: `hosts`).
+- `-f`/`--format`: output format (currently supports `hosts` and `dnsmasq`; default: `hosts`)
 - `-p`/`--header`: path to the header file.
 - `-w`/`--whitlist`: path to the whitelist (domains that are never blocked).
 - `-b`/`--blacklist`: path to the black list (additional domains to block).
@@ -53,10 +54,18 @@ These functions are applied after the functions specific to the source list.
 
 ## TODO
 - Check if domains are still active.
-- Support other output formats (support DNSMasq configuration file).
-- Allow more configurations for output file (e.g. which IP to redirec to in `/etc/hosts`?; which response provide with DNSMasq?).
+- Allow more configurations for output file (e.g. which IP to redirect to in `/etc/hosts`?; which response provide with Dnsmasq?).
 - Change YAML from sources to config file.
 - Improve source lists encoding support (namely, allow compressed files).
+
+
+## Change Log
+- 1.2 (2017-12-23)
+  - Add support for Dnsmasq
+- 1.1 (2017-12-11)
+  - Add support for caching sources
+- 1.0 (2017-12-10)
+  - Initial version
 
 
 ## Author
@@ -65,6 +74,5 @@ Rui Carlos Gonçalves <rcgoncalves.pt@gmail.com>
 
 ## License
 *HostBlocker* is free software, distributed under the terms of the [GNU] General
-Public License as published by the Free Software Foundation,
-version 3 of the License (or any later version).  For more information,
-see the file LICENSE.
+Public License as published by the Free Software Foundation, version 3 of the License (or any later version).
+For more information, see the file LICENSE.

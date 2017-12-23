@@ -17,6 +17,7 @@ class TestMain(unittest.TestCase):
         args = hostblocker.main.init_args()
         self.assertEqual(args.config, 'config/sources.yml')
         self.assertEqual(args.out, 'hosts')
+        self.assertEqual(args.format, 'hosts')
         self.assertEqual(args.header, '')
         self.assertEqual(args.whitelist, '')
         self.assertEqual(args.blacklist, '')
@@ -28,6 +29,7 @@ class TestMain(unittest.TestCase):
         sys.argv = ['hostblocker',
                     '-s', 'sources.yml',
                     '-o', 'out',
+                    '-f', 'format',
                     '-p', 'header',
                     '-w', 'whitelist',
                     '-b', 'blacklist',
@@ -37,6 +39,7 @@ class TestMain(unittest.TestCase):
         args = hostblocker.main.init_args()
         self.assertEqual(args.config, 'sources.yml')
         self.assertEqual(args.out, 'out')
+        self.assertEqual(args.format, 'format')
         self.assertEqual(args.header, 'header')
         self.assertEqual(args.whitelist, 'whitelist')
         self.assertEqual(args.blacklist, 'blacklist')
@@ -48,6 +51,7 @@ class TestMain(unittest.TestCase):
         sys.argv = ['hostblocker',
                     '--source', 'sources.yml',
                     '--output', 'out',
+                    '--format', 'format',
                     '--header', 'header',
                     '--whitelist', 'whitelist',
                     '--blacklist', 'blacklist',
@@ -57,6 +61,7 @@ class TestMain(unittest.TestCase):
         args = hostblocker.main.init_args()
         self.assertEqual(args.config, 'sources.yml')
         self.assertEqual(args.out, 'out')
+        self.assertEqual(args.format, 'format')
         self.assertEqual(args.header, 'header')
         self.assertEqual(args.whitelist, 'whitelist')
         self.assertEqual(args.blacklist, 'blacklist')

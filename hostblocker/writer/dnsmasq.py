@@ -5,16 +5,13 @@ from typing import DefaultDict, Set
 from hostblocker.writer import APP_HEADER
 
 
-IP = '0.0.0.0'
-
-
 def write(
         hosts: DefaultDict[str, int],
         header: str,
         out: str,
         threshold: int=1) -> int:
     """
-    Generates the hosts file from the hosts map.
+    Generates the DNSMasq config file from the hosts map.
     Entries with score above the given threshold are written to the output file.
 
     :param hosts: the hosts map.
@@ -76,7 +73,7 @@ def write_hosts_list(
     """
     try:
         for host in hosts_list:
-            file.write(IP + ' ' + host + '\n')
+            file.write('server=/' + host + '/\n')
     except IOError:
         logging.exception('IO error writing hosts list')
         return 1
