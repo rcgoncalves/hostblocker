@@ -54,7 +54,7 @@ def apply_whitelist(
                 for line in file.readlines():
                     domain = line.strip()
                     if hosts[domain] < threshold:
-                        logging.info('domain no blocked: %s (score: %d)', domain, hosts[domain])
+                        logging.info('domain not blocked: %s (score: %d)', domain, hosts[domain])
                     else:
                         logging.debug('unblocking domain %s (previous score: %d)',
                                       domain, hosts[domain])

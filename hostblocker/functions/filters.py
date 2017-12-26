@@ -52,5 +52,5 @@ def is_valid_domain(domain: str) -> bool:
         and bool(DOMAIN_ALPHA.search(domain)) \
         and all(DOMAIN_SEG_MATCH.match(seg) for seg in domain.split("."))
     if not res:
-        logging.warning('invalid domain %s', domain)
+        logging.warning('invalid domain %s', domain.encode('utf-8'))
     return res
