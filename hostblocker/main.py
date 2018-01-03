@@ -43,7 +43,7 @@ def init_args():
                         help='Output file',
                         required=False, default='hosts', dest='out')
     parser.add_argument('-f', '--format',
-                        help='Specifies the output format (hosts or dnsmasq)',
+                        help='Specifies the output format (hosts, dnsmasq or bind)',
                         required=False, default='hosts', dest='format')
     parser.add_argument('-p', '--header',
                         help='Header for the output file',
