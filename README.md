@@ -30,8 +30,13 @@ The application supports the following options:
 - `-p`/`--header`: path to the header file.
 - `-w`/`--whitlist`: path to the whitelist (domains that are never blocked).
 - `-b`/`--blacklist`: path to the black list (additional domains to block).
-- `-t`/`--threashold`: score threshold to block a domain (default: 4).
-- `-c`/`--cache`: number of hours to cache files (default: 60)
+- `-t`/`--threashold`: score threshold to block a domain (default: 0).
+- `-c`/`--cache`: number of hours to cache files (default: 60).
+
+Moreover, certain options can be controlled through environment variables:
+- `HOSTBLOCKER_CACHE_PATH`: cache directory (default: `./cache`).
+- `HOSTBLOCKER_HOSTS_IP`: the IP to use in hosts file (default: `0.0.0.0`)
+- `HOSTBLOCKER_BIND_WILDCARD_MIN_DOMAINS`: minimum number of sub-domains to use a wildcard with Bind.
 
 
 ## Sources List
@@ -40,7 +45,7 @@ The source lists are defined in a YAML file, which contains the list of source U
 ### List of URLs
 The list of URLs is defined by the entry `sources`, which should contain a list of source items.
 Each source item must have the following entries:
-- `url`: the URL of the source list (typically a HTTP(S) URL, but may also be a local file, if using the prefix `fil://`).
+- `url`: the URL of the source list (typically a HTTP(S) URL, but may also be a local file, if using the prefix `file://`).
 - `score`: the score of the list.
 
 Additionally, each item may have the following optional properties:
@@ -55,17 +60,23 @@ These functions are applied after the functions specific to the source list.
 
 ## TODO
 - Check if domains are still active.
-- Allow more configurations for output file (e.g. which IP to redirect to in `/etc/hosts`?; which response provide with Dnsmasq?).
-- Change YAML from sources to config file.
 - Improve source lists encoding support (namely, allow compressed files).
 
 
 ## Change Log
+- 1.3.1 (2018-01-05)
+  - Code refactoring
+  - Change default score threshold to 0
+  - Allow specification of IP for hosts file
+  - Sort output by reverse domain
+  - Set remote connections timeout to 10s
 - 1.3 (2018-01-03)
   - Add support for Bind
 - 1.2 (2017-12-23)
+  - Code refactoring
   - Add support for Dnsmasq
 - 1.1 (2017-12-11)
+  - Improve AdBlock mapper
   - Add support for caching sources
 - 1.0 (2017-12-10)
   - Initial version

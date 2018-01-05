@@ -21,7 +21,7 @@ class TestMain(unittest.TestCase):
         self.assertEqual(args.header, '')
         self.assertEqual(args.whitelist, '')
         self.assertEqual(args.blacklist, '')
-        self.assertEqual(args.score, 4)
+        self.assertEqual(args.score, 0)
         self.assertEqual(args.cache, 60)
         self.assertEqual(args.debug, '')
 

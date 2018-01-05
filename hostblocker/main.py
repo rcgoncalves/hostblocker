@@ -43,7 +43,7 @@ def init_args():
                         help='Output file',
                         required=False, default='hosts', dest='out')
     parser.add_argument('-f', '--format',
-                        help='Specifies the output format (hosts, dnsmasq or bind)',
+                        help='Specifies the output format (hosts, dnsmasq or bind )',
                         required=False, default='hosts', dest='format')
     parser.add_argument('-p', '--header',
                         help='Header for the output file',
@@ -56,7 +56,7 @@ def init_args():
                         required=False, default='', dest='blacklist')
     parser.add_argument('-t', '--threshold', type=int,
                         help='Score threshold to block domains',
-                        required=False, default=4, dest='score')
+                        required=False, default=0, dest='score')
     parser.add_argument('-c', '--cache', type=int,
                         help='Number of hours to cache file',
                         required=False, default=60, dest='cache')
@@ -94,9 +94,10 @@ def main() -> int:
     hosts = hostblocker.builder.build_from_sources(config, args.cache)
     hosts = hostblocker.builder.apply_blacklist(hosts, args.blacklist, args.score)
     hosts = hostblocker.builder.apply_whitelist(hosts, args.whitelist, args.score)
+    hosts_list = hostblocker.builder.filter_score(hosts, args.score)
     try:
         mod = importlib.import_module('hostblocker.writer.' + args.format)
-        mod.write(hosts, args.header, args.out, args.score)
+        mod.write(hosts_list, args.header, args.out)
     except ModuleNotFoundError:
         logging.error('invalid output format: %s', args.format)
         exit(2)

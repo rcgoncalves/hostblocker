@@ -5,7 +5,7 @@ import unittest
 import hostblocker.reader.fetch
 
 
-URL = 'https://example.com/file.txt'
+URL = 'http://example.com/file.txt'
 
 
 class TestFetch(unittest.TestCase):

@@ -64,6 +64,28 @@ def apply_whitelist(
     return hosts
 
 
+def filter_score(
+        hosts: DefaultDict[str, int],
+        threshold: int=1) -> List[str]:
+    """
+    Filters the hosts based on a score threshold.
+    The list returned is ordered by reverse domain name.
+
+    :param hosts: the map of hosts to their score.
+    :param threshold: the score threshold to include a domain in the output (default: 1).
+    :return:
+    """
+    hosts_list = []
+    for host, score in hosts.items():
+        if score > threshold:
+            hosts_list.append(host)
+        elif score > 0.9 * threshold:
+            logging.info('host %s discarded, but score is above 90%% of threshold (%d)',
+                         host, score)
+    logging.info('score filter: %d/%d (threshold: %d)', len(hosts_list), len(hosts), threshold)
+    return sorted(hosts_list, key=reverse_domain)
+
+
 def build_from_sources(
         config: Union[dict, list, None],
         cache: int=0) -> DefaultDict[str, int]:
@@ -168,3 +190,13 @@ def filter_line(
             if not getattr(hostblocker.functions.filters, f)(line):
                 return False
     return True
+
+
+def reverse_domain(domain: str) -> str:
+    """
+    Reverses the segments of a domain name.
+
+    :param domain: the domain to reverse.
+    :return: the reversed domain.
+    """
+    return '.'.join(reversed(domain.split('.')))

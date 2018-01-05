@@ -27,7 +27,8 @@ class TestProcessHosts(unittest.TestCase):
             self.assertTrue(hostblocker.functions.filters.is_valid_domain(key))
 
     def test_process_lines_list(self):
-        lines = hostblocker.reader.fetch.get_lines('file://' + str(self.dir_path) + '/resources/list.txt')
+        lines = hostblocker.reader.fetch.get_lines('file://' + str(self.dir_path)
+                                                   + '/resources/list.txt')
         hosts = collections.defaultdict(int)
         hosts = hostblocker.builder.process_lines(lines, hosts,
                                                   ['remove_comments', 'trim'],
@@ -38,11 +39,12 @@ class TestProcessHosts(unittest.TestCase):
             self.assertTrue(hostblocker.functions.filters.is_valid_domain(key))
 
     def test_process_lines_adblock(self):
-        lines = hostblocker.reader.fetch.get_lines('file://' + str(self.dir_path) + '/resources/adblock.txt')
+        lines = hostblocker.reader.fetch.get_lines('file://' + str(self.dir_path)
+                                                   + '/resources/adblock.txt')
         hosts = collections.defaultdict(int)
         hosts = hostblocker.builder.process_lines(lines, hosts,
                                                   ['remove_adblock_text',
-                                                     'remove_adblock_comments'],
+                                                   'remove_adblock_comments'],
                                                   ['is_not_blank'])
         self.assertEqual(len(hosts), 6)
         for key in hosts:
@@ -50,7 +52,8 @@ class TestProcessHosts(unittest.TestCase):
             self.assertTrue(hostblocker.functions.filters.is_valid_domain(key))
 
     def test_process_lines_list_invalid(self):
-        lines = hostblocker.reader.fetch.get_lines('file://' + str(self.dir_path) + '/resources/list.txt')
+        lines = hostblocker.reader.fetch.get_lines('file://' + str(self.dir_path)
+                                                   + '/resources/list.txt')
         hosts = collections.defaultdict(int)
         hosts = hostblocker.builder.process_lines(lines, hosts,
                                                   ['remove_comments', '_invalid_', 'trim'],
@@ -61,7 +64,8 @@ class TestProcessHosts(unittest.TestCase):
             self.assertTrue(hostblocker.functions.filters.is_valid_domain(key))
 
     def test_apply_whitelist(self):
-        lines = hostblocker.reader.fetch.get_lines('file://' + str(self.dir_path) + '/resources/list.txt')
+        lines = hostblocker.reader.fetch.get_lines('file://' + str(self.dir_path)
+                                                   + '/resources/list.txt')
         hosts = collections.defaultdict(int)
         hosts = hostblocker.builder.process_lines(lines, hosts,
                                                   ['remove_comments'],
@@ -82,7 +86,8 @@ class TestProcessHosts(unittest.TestCase):
             self.assertEqual(len(hosts), 0)
 
     def test_apply_blacklist(self):
-        lines = hostblocker.reader.fetch.get_lines('file://' + str(self.dir_path) + '/resources/list.txt')
+        lines = hostblocker.reader.fetch.get_lines('file://' + str(self.dir_path)
+                                                   + '/resources/list.txt')
         hosts = collections.defaultdict(int)
         hosts = hostblocker.builder.process_lines(lines, hosts,
                                                   ['remove_comments'],
@@ -102,13 +107,33 @@ class TestProcessHosts(unittest.TestCase):
                                                         str(self.dir_path) + '/resources/none')
             self.assertEqual(len(hosts), 0)
 
+    def test_filter_score(self):
+        lines = hostblocker.reader.fetch.get_lines('file://' + str(self.dir_path)
+                                                   + '/resources/list.txt')
+        hosts = collections.defaultdict(int)
+        hosts = hostblocker.builder.process_lines(lines, hosts,
+                                                  ['remove_comments'],
+                                                  ['is_not_blank'])
+        hosts_list = hostblocker.builder.filter_score(hosts, 0)
+        self.assertEqual(len(hosts_list), len(hosts))
+
+    def test_filter_score_empty(self):
+        lines = hostblocker.reader.fetch.get_lines('file://' + str(self.dir_path)
+                                                   + '/resources/list.txt')
+        hosts = collections.defaultdict(int)
+        hosts = hostblocker.builder.process_lines(lines, hosts,
+                                                  ['remove_comments'],
+                                                  ['is_not_blank'])
+        hosts_list = hostblocker.builder.filter_score(hosts, 1)
+        self.assertEqual(len(hosts_list), 0)
+
     def test_build_from_sources(self):
         config = {
             'mappers': ['trim'],
             'filters': ['is_not_blank'],
             'sources': [
                 {
-                    'url': 'https://example.com/file.txt',
+                    'url': 'http://example.com/file.txt',
                     'score': 1,
                 },
                 {

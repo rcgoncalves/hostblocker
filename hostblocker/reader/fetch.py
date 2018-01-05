@@ -43,12 +43,11 @@ def get_lines_no_cache(url: str) -> Union[List[bytearray], None]:
     req = urllib.request.Request(url,
                                  data=None,
                                  headers={
-                                     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13)'
-                                                   ' AppleWebKit/604.4.7 (KHTML, like Gecko)'
-                                                   ' Version/11.0.2 Safari/604.4.7'
+                                     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:57.0) '
+                                                   'Gecko/20100101 Firefox/57.0'
                                  })
     try:
-        data = urllib.request.urlopen(req)
+        data = urllib.request.urlopen(req, timeout=10)
         lines = data.readlines()
     except (urllib.request.HTTPError, urllib.request.URLError, IOError):
         logging.exception('error fetching data from URL %s', url)
