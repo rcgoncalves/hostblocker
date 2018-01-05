@@ -55,7 +55,7 @@ if sys.argv[-1] == 'coverage':
 
 setup(
     name='HostBlocker',
-    version='1.3.1',
+    version='1.4',
     description='Host file domain blocker builder',
     author='Rui Carlos Goncalves',
     author_email='rcgoncalves.pt@gmail.com',

@@ -1,7 +1,8 @@
 # HostBlocker: Domain Blocker File Builder
 *HostBlocker* is an application that builds lists to block known *problematic* domains (e.g., associated to Spam, malware, tracking).
-It takes a configuration file with multiple lists of such domains, and builds a unified output file, with a configurable format (currently it supports `/etc/hosts`, Dnsmasq and Bind/RPZ formats).
-When using Bind output format, it can group multiple sub-domains under a common wildcard domain, in case both the base domain and 3 different sub-domains are present.
+It takes a configuration file with multiple lists of such domains, and builds a unified output file, with a configurable format (currently it supports `/etc/hosts`, Dnsmasq, Bind/RPZ and Unbound formats).
+When using Bind output format, it can group multiple sub-domains under a common wildcard domain, in case both the base domain and certain number of different sub-domains are present.
+For Unbound, sub-domain of blocked domains are discarded, as blocking a domain automatically blocks a sub-domain.  With Unbound format, SOA records are also generated (which allows to define the TTL for NXDOMAIN responses).
 Moreover, it allows to specify a blacklists, a whitelist, and a custom header.
 
 Each source list may have a different format.
@@ -26,7 +27,7 @@ This application requires Python 3, and the Python package `yaml`, `setuptools`,
 The application supports the following options:
 - `-s`/`--source`: path to the YAML sources list (default: `config/sources.yml`).
 - `-o`/`--output`: path to output file (default: `hosts`).
-- `-f`/`--format`: output format (currently supports `hosts`, `dnsmasq` and `bind`; default: `hosts`)
+- `-f`/`--format`: output format (currently supports `hosts`, `dnsmasq`, `bind` and `unbound`; default: `hosts`)
 - `-p`/`--header`: path to the header file.
 - `-w`/`--whitlist`: path to the whitelist (domains that are never blocked).
 - `-b`/`--blacklist`: path to the black list (additional domains to block).
@@ -37,6 +38,8 @@ Moreover, certain options can be controlled through environment variables:
 - `HOSTBLOCKER_CACHE_PATH`: cache directory (default: `./cache`).
 - `HOSTBLOCKER_HOSTS_IP`: the IP to use in hosts file (default: `0.0.0.0`)
 - `HOSTBLOCKER_BIND_WILDCARD_MIN_DOMAINS`: minimum number of sub-domains to use a wildcard with Bind.
+- `HOSTBLOCKER_UNBOUND_ZONE_TYPE`: zone type to use with Unbound (default: `always_nxdomain`).
+- `HOSTBLOCKER_SOA_*`: SOA record fields (currently SOA records are only generated for Unbound).
 
 
 ## Sources List
@@ -64,6 +67,8 @@ These functions are applied after the functions specific to the source list.
 
 
 ## Change Log
+- 1.4 (2018-01-05)
+  - Add support for Unbound
 - 1.3.1 (2018-01-05)
   - Code refactoring
   - Change default score threshold to 0
@@ -87,6 +92,6 @@ Rui Carlos Gonçalves (rcgoncalves.pt@gmail.com)
 
 
 ## License
-*HostBlocker* is free software, distributed under the terms of the [GNU] General
+*HostBlocker* is free software, distributed under the terms of the GNU General
 Public License as published by the Free Software Foundation, version 3 of the License (or any later version).
 For more information, see the file LICENSE.
