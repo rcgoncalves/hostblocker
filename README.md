@@ -25,7 +25,7 @@ This application requires Python 3, and the Python package `yaml`, `setuptools`,
 
 ## Usage
 The application supports the following options:
-- `-s`/`--source`: path to the YAML sources list (default: `config/sources.yml`).
+- `-s`/`--source`: path to the YAML sources list.
 - `-o`/`--output`: path to output file (default: `hosts`).
 - `-f`/`--format`: output format (currently supports `hosts`, `dnsmasq`, `bind` and `unbound`; default: `hosts`)
 - `-p`/`--header`: path to the header file.
@@ -62,11 +62,14 @@ These functions are applied after the functions specific to the source list.
 
 
 ## TODO
+- Add support to `Last-Modified` HTTP header when using cache.
 - Check if domains are still active.
 - Improve source lists encoding support (namely, allow compressed files).
 
 
 ## Change Log
+- 1.4.1 (2018-03-06)
+  - Remove default source file
 - 1.4 (2018-01-05)
   - Add support for Unbound
 - 1.3.1 (2018-01-05)

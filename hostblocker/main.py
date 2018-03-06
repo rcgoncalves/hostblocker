@@ -38,7 +38,7 @@ def init_args():
     parser = argparse.ArgumentParser(description='Build an hosts file to block domains')
     parser.add_argument('-s', '--source',
                         help='YAML sources list',
-                        required=False, default='config/sources.yml', dest='config')
+                        required=True, dest='config')
     parser.add_argument('-o', '--output',
                         help='Output file',
                         required=False, default='hosts', dest='out')

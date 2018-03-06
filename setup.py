@@ -31,7 +31,7 @@ if sys.argv[-1] == 'coverage':
                     file,
                     ]
             coverage.cmdline.main(argv)
-        coverage.cmdline.main(["xml", "-o", ".coverage.xml", "--ignore-errors"])
+        coverage.cmdline.main(['xml', '-o', '.coverage.xml', '--ignore-errors'])
         root = xml.etree.ElementTree.parse('.coverage.xml').getroot()
         print('----------------------------------------------------------------------')
         print('COVERAGE')
@@ -55,7 +55,7 @@ if sys.argv[-1] == 'coverage':
 
 setup(
     name='HostBlocker',
-    version='1.4',
+    version='1.4.1',
     description='Host file domain blocker builder',
     author='Rui Carlos Goncalves',
     author_email='rcgoncalves.pt@gmail.com',

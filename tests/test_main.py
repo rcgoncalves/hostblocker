@@ -13,7 +13,7 @@ class TestMain(unittest.TestCase):
     Test class for main.
     """
     def test_init_args_defaults(self):
-        sys.argv = ['hostblocker']
+        sys.argv = ['hostblocker', '-s', 'config/sources.yml']
         args = hostblocker.main.init_args()
         self.assertEqual(args.config, 'config/sources.yml')
         self.assertEqual(args.out, 'hosts')
