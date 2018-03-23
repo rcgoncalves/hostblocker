@@ -10,8 +10,8 @@ def get_lines(
         cache: int=0) -> List[bytearray]:
     """
     Retrieves the lines from a URL.
-    Lines may be cache, and lines may be read from cache, if cache is greater than 0, and URL is not
-    of type 'file://'.
+    Lines may be cached and read from cache if cache is greater than 0 and URL is not of type
+    'file://'.
 
     :param url: the URL.
     :param cache: number of hours to cache files.
@@ -27,7 +27,10 @@ def get_lines(
             logging.debug('no cache for URL %s', url)
             lines = get_lines_no_cache(url)
             if lines is None:
-                lines = []
+                # Download failed, so we use cache up to one year.
+                lines = hostblocker.reader.cache.read(url, 24 * 365)
+                if lines is None:
+                    lines = []
             else:
                 hostblocker.reader.cache.write(url, lines)
     return lines
