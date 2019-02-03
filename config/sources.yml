@@ -16,8 +16,6 @@ filters:
 # - others: 20
 sources:
     ## Host lists
-    - url: 'https://raw.githubusercontent.com/ZeroDot1/CoinBlockerLists/master/list.txt'
-      score: 30
     - url: 'https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt'
       score: 30
       header: 1
@@ -28,7 +26,9 @@ sources:
       score: 30
     - url: 'https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt'
       score: 30
-    - url: 'https://raw.githubusercontent.com/quidsup/notrack/master/trackers.txt'
+    - url: 'https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-blocklist.txt'
+      score: 15
+    - url: 'https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt'
       score: 15
     - url: 'https://raw.githubusercontent.com/piwik/referrer-spam-blacklist/master/spammers.txt'
       score: 30
@@ -159,10 +159,6 @@ sources:
       mappers:
           - 'remove_adblock_text'
     - url: 'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/resource-abuse.txt'
-      score: 20
-      mappers:
-          - 'remove_adblock_text'
-    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardDNS/master/Filters/filter.txt'
       score: 20
       mappers:
           - 'remove_adblock_text'
