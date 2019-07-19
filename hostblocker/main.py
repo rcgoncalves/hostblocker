@@ -87,7 +87,7 @@ def main() -> int:
     config = None
     with open(args.config, 'r') as stream:
         try:
-            config = yaml.load(stream)
+            config = yaml.safe_load(stream)
         except yaml.YAMLError:
             logging.exception('error reading sources YAML')
             exit(1)

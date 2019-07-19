@@ -68,6 +68,8 @@ These functions are applied after the functions specific to the source list.
 
 
 ## Change Log
+- 1.4.3 (2019-07-19)
+  - Use safer method for reading configuration
 - 1.4.2 (2018-03-23)
   - Use cached file if download fails
 - 1.4.1 (2018-03-06)
