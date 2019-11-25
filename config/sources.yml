@@ -162,6 +162,10 @@ sources:
       score: 20
       mappers:
           - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/SpywareFilter/sections/mobile.txt'
+      score: 20
+      mapper:
+          - 'remove_adblock_text'
     - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/SpywareFilter/sections/specific.txt'
       score: 20
       mappers:
@@ -190,15 +194,15 @@ sources:
       score: 20
       mappers:
           - 'remove_adblock_text'
-    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/MobileFilter/sections/spyware.txt'
-      score: 20
-      mappers:
-          - 'remove_adblock_text'
     - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/EnglishFilter/sections/adservers.txt'
       score: 20
       mappers:
           - 'remove_adblock_text'
     - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/EnglishFilter/sections/adservers_firstparty.txt'
+      score: 20
+      mappers:
+          - 'remove_adblock_text'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/EnglishFilter/sections/cryptominers.txt'
       score: 20
       mappers:
           - 'remove_adblock_text'
