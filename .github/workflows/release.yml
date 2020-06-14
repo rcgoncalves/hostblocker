@@ -1,0 +1,34 @@
+on:
+  push:
+    tags:
+      - 'v*'
+
+name: Create Release
+
+jobs:
+  build:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Get changes
+        run: |
+          CHANGES="$(sed -n '/^## \[[0-9]/,$p' 'CHANGELOG.md' | sed '1s/^## /#/' | sed '/^## /,$d' | sed -e '1s/^#/## /' -e 's/\(###\ .*\)/\1:/' | sed -e :a -e '/^\n*$/N;/\n$/ba')"
+          echo "$CHANGES"
+          CHANGES="${CHANGES//'%'/'%25'}"
+          CHANGES="${CHANGES//$'\n'/'%0A'}"
+          CHANGES="${CHANGES//$'\r'/'%0D'}"
+          echo "::set-env name=CHANGES::$CHANGES"
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Hostblocker ${{ github.ref }}
+          body: |
+            ${{ env.CHANGES }}
+          draft: true
+          prerelease: false
