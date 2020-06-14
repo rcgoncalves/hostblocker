@@ -1,9 +1,11 @@
 # HostBlocker: Domain Blocker File Builder
+
+## About
 *HostBlocker* is an application that builds lists to block known *problematic* domains (e.g., associated to Spam, malware, tracking).
 It takes a configuration file with multiple lists of such domains, and builds a unified output file, with a configurable format (currently it supports `/etc/hosts`, Dnsmasq, Bind/RPZ and Unbound formats).
 When using Bind output format, it can group multiple sub-domains under a common wildcard domain, in case both the base domain and certain number of different sub-domains are present.
 For Unbound, sub-domain of blocked domains are discarded, as blocking a domain automatically blocks a sub-domain.  With Unbound format, SOA records are also generated (which allows to define the TTL for NXDOMAIN responses).
-Moreover, it allows to specify a blacklists, a whitelist, and a custom header.
+Moreover, it allows to specify a blacklist, a whitelist, and a custom header.
 
 Each source list may have a different format.
 Mapper and filter functions should be used to obtain the valid/desired domains from each list.
@@ -12,15 +14,21 @@ That is, for each line of a list, first a sequence of mapper functions is applie
 Moreover, each list has associated a score, and only domains for which the sum of scores from the different lists is above a certain threshold are used.
 This allows users to use less reliable lists, without risking blocking wrong domains (assigning a low score to the list, we make sure the domain is blocked only if it appears in other lists too).
 
-This application caches the downloaded files for a configurable amount of time (60 hours by default), to avoid downloading the file to often.
+This application caches the downloaded files for a configurable amount of time (60 hours by default), to avoid downloading the file too often.
 The cache directory can be specified with the environment variable `HOSTBLOCKER_CACHE_PATH` (uses relative directory `cache` by default).
+
+
+## Links
+* [Downloads](https://github.com/rcgoncalves/hostblocker/releases/)
+* [Changelog](https://github.com/rcgoncalves/hostblocker/blob/master/CHANGELOG.md)
+* [Issues](https://github.com/rcgoncalves/hostblocker/issues)
 
 
 ## Installation
 To install this application simply run the command `python setup.py install`.
 This will make the command `hostblocker` available.
 
-This application requires Python 3, and the Python package `yaml`, `setuptools`, and `coverage`.
+This application requires Python 3, and the Python packages `yaml`, `setuptools`, and `coverage`.
 
 
 ## Usage
@@ -30,7 +38,7 @@ The application supports the following options:
 - `-f`/`--format`: output format (currently supports `hosts`, `dnsmasq`, `bind` and `unbound`; default: `hosts`)
 - `-p`/`--header`: path to the header file.
 - `-w`/`--whitlist`: path to the whitelist (domains that are never blocked).
-- `-b`/`--blacklist`: path to the black list (additional domains to block).
+- `-b`/`--blacklist`: path to the blacklist (additional domains to block).
 - `-t`/`--threashold`: score threshold to block a domain (default: 0).
 - `-c`/`--cache`: number of hours to cache files (default: 60).
 
@@ -67,38 +75,14 @@ These functions are applied after the functions specific to the source list.
 - Improve source lists encoding support (namely, allow compressed files).
 
 
-## Change Log
-- 1.4.3 (2019-07-19)
-  - Use safer method for reading configuration
-- 1.4.2 (2018-03-23)
-  - Use cached file if download fails
-- 1.4.1 (2018-03-06)
-  - Remove default source file
-- 1.4 (2018-01-05)
-  - Add support for Unbound
-- 1.3.1 (2018-01-05)
-  - Code refactoring
-  - Change default score threshold to 0
-  - Allow specification of IP for hosts file
-  - Sort output by reverse domain
-  - Set remote connections timeout to 10s
-- 1.3 (2018-01-03)
-  - Add support for Bind
-- 1.2 (2017-12-23)
-  - Code refactoring
-  - Add support for Dnsmasq
-- 1.1 (2017-12-11)
-  - Improve AdBlock mapper
-  - Add support for caching sources
-- 1.0 (2017-12-10)
-  - Initial version
-
-
-## Author
-Rui Carlos Gonçalves (rcgoncalves.pt@gmail.com)
-
-
 ## License
-*HostBlocker* is free software, distributed under the terms of the GNU General
-Public License as published by the Free Software Foundation, version 3 of the License (or any later version).
-For more information, see the file LICENSE.
+HostBlocker, a domain blocker file builder
+
+Copyright (C) 2017-2019 Rui Carlos Gonçalves
+
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
