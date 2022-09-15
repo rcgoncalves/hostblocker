@@ -37,10 +37,18 @@ sources:
     - url: 'http://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml&showintro=1&startdate%5Bday%5D=01&startdate%5Bmonth%5D=01&startdate%5Byear%5D=2000&mimetype=plaintext'
       score: 20
     ## Hosts files
-    - url: 'https://www.malwaredomainlist.com/hostslist/hosts.txt'
+    - url: 'https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.2o7Net/hosts'
       score: 30
       mappers:
-          - 'remove_ip_local'
+          - 'remove_ip_zero'
+    - url: 'https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts.txt'
+      score: 30
+      mappers:
+          - 'remove_ip_zero'
+    - url: 'https://winhelp2002.mvps.org/hosts.txt'
+      score: 30
+      mappers:
+          - 'remove_ip_zero'
     - url: 'https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt'
       score: 30
       mappers:
@@ -80,10 +88,6 @@ sources:
       mappers:
           - 'remove_ip_zero'
     - url: 'https://www.hostsfile.org/Downloads/hosts.txt'
-      score: 20
-      mappers:
-          - 'remove_ip_local'
-    - url: 'https://hosts-file.net/download/hosts.txt'
       score: 20
       mappers:
           - 'remove_ip_local'
@@ -194,23 +198,23 @@ sources:
       score: 20
       mappers:
           - 'remove_adblock_text'
-    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/EnglishFilter/sections/adservers.txt'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/BaseFilter/sections/adservers.txt'
       score: 20
       mappers:
           - 'remove_adblock_text'
-    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/EnglishFilter/sections/adservers_firstparty.txt'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/BaseFilter/sections/adservers_firstparty.txt'
       score: 20
       mappers:
           - 'remove_adblock_text'
-    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/EnglishFilter/sections/cryptominers.txt'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/BaseFilter/sections/cryptominers.txt'
       score: 20
       mappers:
           - 'remove_adblock_text'
-    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/EnglishFilter/sections/foreign.txt'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/BaseFilter/sections/foreign.txt'
       score: 20
       mappers:
           - 'remove_adblock_text'
-    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/EnglishFilter/sections/specific.txt'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/BaseFilter/sections/specific.txt'
       score: 20
       mappers:
           - 'remove_adblock_text'
@@ -239,7 +243,3 @@ sources:
       mappers:
           - 'remove_adblock_text'
     # others
-    - url: 'https://www.squidblacklist.org/downloads/squid-ads.acl'
-      score: 30
-      mappers:
-          - 'remove_dot'
