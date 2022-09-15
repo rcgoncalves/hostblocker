@@ -214,15 +214,15 @@ sources:
       score: 20
       mappers:
           - 'remove_adblock_text'
-    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/AnnoyancesFilter/sections/popups.txt'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/AnnoyancesFilter/Popups/sections/popups_general.txt'
       score: 20
       mappers:
           - 'remove_adblock_text'
-    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/AnnoyancesFilter/sections/push-notifications.txt'
+    - url: 'https://github.com/AdguardTeam/AdguardFilters/blob/master/AnnoyancesFilter/Popups/sections/push-notifications_general.txt'
       score: 20
       mappers:
           - 'remove_adblock_text'
-    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/AnnoyancesFilter/sections/widgets.txt'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/AnnoyancesFilter/Widgets/sections/widgets.txt'
       score: 20
       mappers:
           - 'remove_adblock_text'
