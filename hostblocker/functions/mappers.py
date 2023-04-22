@@ -45,7 +45,7 @@ def remove_ip_zero(line: str) -> str:
     :param line: the line.
     :return: the line without the zero IP.
     """
-    return remove_ip(line, '0.0.0.0')
+    return remove_ip(line, '0.0.0.0')  # noqa: S104
 
 
 def remove_ip(

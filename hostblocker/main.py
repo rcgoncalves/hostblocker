@@ -3,6 +3,7 @@
 import argparse
 import importlib
 import logging
+import sys
 import yaml
 
 import hostblocker.builder
@@ -16,8 +17,7 @@ def init_logging(debug: str) -> logging.Logger:
     :param debug: enable debug output.
     :return: the root logger.
     """
-    logging.basicConfig(level=logging.DEBUG,
-                        format='%(levelname)-8s %(message)s')
+    logging.basicConfig(level=logging.DEBUG, format='%(levelname)-8s %(message)s')
     root = logging.getLogger()
     root.handlers[0].setLevel(logging.ERROR)
     if debug:
@@ -29,7 +29,7 @@ def init_logging(debug: str) -> logging.Logger:
     return root
 
 
-def init_args():
+def init_args() -> argparse.Namespace:
     """
     Parses the command line options.
 
@@ -84,13 +84,12 @@ def main() -> int:
     logging.debug('blacklist file: %s', args.blacklist)
     logging.debug('minimum score: %d', args.score)
     logging.debug('max cache: %d', args.cache)
-    config = None
-    with open(args.config, 'r') as stream:
+    with open(args.config) as stream:
         try:
             config = yaml.safe_load(stream)
         except yaml.YAMLError:
             logging.exception('error reading sources YAML')
-            exit(1)
+            sys.exit(1)
     hosts = hostblocker.builder.build_from_sources(config, args.cache)
     hosts = hostblocker.builder.apply_blacklist(hosts, args.blacklist, args.score)
     hosts = hostblocker.builder.apply_whitelist(hosts, args.whitelist, args.score)
@@ -99,8 +98,8 @@ def main() -> int:
         mod = importlib.import_module('hostblocker.writer.' + args.format)
         mod.write(hosts_list, args.header, args.out)
     except ModuleNotFoundError:
-        logging.error('invalid output format: %s', args.format)
-        exit(2)
+        logging.exception('invalid output format: %s', args.format)
+        sys.exit(2)
     return 0
 
 

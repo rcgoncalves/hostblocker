@@ -1,17 +1,17 @@
-import io
 import logging
 import os
-from typing import List
+from io import TextIOBase
 
+from typing import Final, TextIO
 from hostblocker.writer import APP_HEADER
 
 
-IP_VAR = 'HOSTBLOCKER_HOSTS_IP'
-IP = os.getenv(IP_VAR, '0.0.0.0')
+IP_VAR: Final[str] = 'HOSTBLOCKER_HOSTS_IP'
+IP: Final[str] = os.getenv(IP_VAR, '0.0.0.0')  # noqa: S104
 
 
 def write(
-        hosts_list: List[str],
+        hosts_list: list[str],
         header: str,
         out: str) -> int:
     """
@@ -34,7 +34,7 @@ def write(
             file.write('### BEGIN HostBlocker Block List\n')
             result += write_hosts_list(hosts_list, file)
             file.write('### END HostBlocker Block List\n')
-    except IOError:
+    except OSError:
         logging.exception('IO error writing hosts')
         result += 1
     return result
@@ -42,7 +42,7 @@ def write(
 
 def write_header(
         header: str,
-        file: io.TextIOWrapper) -> int:
+        file: TextIOBase) -> int:
     """
     Writes the header to the file.
 
@@ -51,20 +51,20 @@ def write_header(
     :return: 0 if no error occurred; 1 if there was an IO error.
     """
     try:
-        with open(header, 'r') as header_file:
+        with open(header) as header_file:
             contents = header_file.read()
             file.write(contents)
             if not contents[-1].isspace():
                 file.write('\n')
-    except IOError:
+    except OSError:
         logging.exception('IO error writing header')
         return 1
     return 0
 
 
 def write_hosts_list(
-        hosts_list: List[str],
-        file: io.TextIOWrapper) -> int:
+        hosts_list: list[str],
+        file: TextIO) -> int:
     """
     Writes the list of hosts to a file.
 
@@ -75,7 +75,7 @@ def write_hosts_list(
     try:
         for host in hosts_list:
             file.write(IP + ' ' + host + '\n')
-    except IOError:
+    except OSError:
         logging.exception('IO error writing hosts list')
         return 1
     return 0

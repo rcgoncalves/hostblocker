@@ -4,21 +4,23 @@ import unittest
 
 import hostblocker.reader.fetch
 
+from typing import Self, Final
 
-URL = 'http://example.com/file.txt'
+
+URL: Final[str] = 'http://example.com/file.txt'
 
 
 class TestFetch(unittest.TestCase):
     """
     Test class for fetch functions.
     """
-    def test_get_lines_error(self):
+    def test_get_lines_error(self: Self) -> None:
         with self.assertLogs(level=logging.ERROR):
             lines = hostblocker.reader.fetch.get_lines(URL + 'x', sys.maxsize)
-            self.assertEqual(lines, [])
+            assert lines == []
 
     @classmethod
-    def setUpClass(cls):
+    def set_up_class(cls: type[Self]) -> None:
         logging.basicConfig(level=logging.CRITICAL)
 
 

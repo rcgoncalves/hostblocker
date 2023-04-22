@@ -1,16 +1,16 @@
 import collections
 import logging
-from typing import DefaultDict, Union, List
 
 import hostblocker.functions.filters
 import hostblocker.functions.mappers
 import hostblocker.reader.fetch
 
+from typing import Any
 
 def apply_blacklist(
-        hosts: DefaultDict[str, int],
+        hosts: dict[str, int],
         blacklist: str,
-        threshold: int=1) -> DefaultDict[str, int]:
+        threshold: int = 1) -> dict[str, int]:
     """
     Applies the blacklist, changing the value (score) of the blacklisted hosts to 9999.
 
@@ -21,7 +21,7 @@ def apply_blacklist(
     """
     if blacklist:
         try:
-            with open(blacklist, 'r') as file:
+            with open(blacklist) as file:
                 for line in file.readlines():
                     domain = line.strip()
                     if hosts[domain] >= threshold:
@@ -31,15 +31,15 @@ def apply_blacklist(
                         logging.debug('blocking domain %s (previous score: %d)',
                                       domain, hosts[domain])
                     hosts[domain] = 9999
-        except IOError:
+        except OSError:
             logging.exception('IO error applying blacklist')
     return hosts
 
 
 def apply_whitelist(
-        hosts: DefaultDict[str, int],
+        hosts: dict[str, int],
         whitelist: str,
-        threshold: int=1) -> DefaultDict[str, int]:
+        threshold: int = 1) -> dict[str, int]:
     """
     Applies the whitelist, changing the value (score) of the whitelisted hosts to 0.
 
@@ -50,7 +50,7 @@ def apply_whitelist(
     """
     if whitelist:
         try:
-            with open(whitelist, 'r') as file:
+            with open(whitelist) as file:
                 for line in file.readlines():
                     domain = line.strip()
                     if hosts[domain] < threshold:
@@ -59,14 +59,14 @@ def apply_whitelist(
                         logging.debug('unblocking domain %s (previous score: %d)',
                                       domain, hosts[domain])
                     hosts[domain.rstrip()] = 0
-        except IOError:
+        except OSError:
             logging.exception('IO error applying whitelist')
     return hosts
 
 
 def filter_score(
-        hosts: DefaultDict[str, int],
-        threshold: int=1) -> List[str]:
+        hosts: dict[str, int],
+        threshold: int = 1) -> list[str]:
     """
     Filters the hosts based on a score threshold.
     The list returned is ordered by reverse domain name.
@@ -87,18 +87,17 @@ def filter_score(
 
 
 def build_from_sources(
-        config: Union[dict, list, None],
-        cache: int=0) -> DefaultDict[str, int]:
+        config: dict[str, Any],
+        cache: int = 0) -> dict[str, int]:
     """
-    Builds the initial hosts map from the sources list, that associates a score to each host domain
-    read.
+    Builds the initial hosts map from the sources list, which associates a score to each host domain read.
 
     :param config: the sources configuration read from the YAML file.
     :param cache: number of hours to cache files.
     :return: the hosts map.
     """
     # dictionary where values have value 0 by default
-    hosts = collections.defaultdict(int)
+    hosts: dict[str, int] = collections.defaultdict(int)
     for item in config['sources']:
         url = item['url']
         logging.info('processing list URL %s', url)
@@ -117,11 +116,11 @@ def build_from_sources(
 
 
 def process_lines(
-        lines: List[bytearray],
-        hosts: DefaultDict[str, int],
-        mappers: List[str],
-        filters: List[str],
-        score: int=1) -> DefaultDict[str, int]:
+        lines: list[bytes],
+        hosts: dict[str, int],
+        mappers: list[str],
+        filters: list[str],
+        score: int = 1) -> dict[str, int]:
     """
     Processes the lines of a file to build the hosts map.
 
@@ -148,10 +147,10 @@ def process_lines(
     logging.debug('filters: %s', str(filters))
     count = 0
     for line in lines:
-        line = line.decode('latin1').strip()
-        line = map_line(line, mappers)
-        if filter_line(line, filters):
-            hosts[line] += score
+        line_str = line.decode('latin1').strip()
+        line_str = map_line(line_str, mappers)
+        if filter_line(line_str, filters):
+            hosts[line_str] += score
             count += 1
     logging.info('added %d domains', count)
     return hosts
@@ -159,7 +158,7 @@ def process_lines(
 
 def map_line(
         line: str,
-        mappers: List[str]) -> str:
+        mappers: list[str]) -> str:
     """
     Applies a sequence of mappers to a line, returning the modified line.
     Assumes the mappers are valid functions.
@@ -176,7 +175,7 @@ def map_line(
 
 def filter_line(
         line: str,
-        filters: List[str]) -> bool:
+        filters: list[str]) -> bool:
     """
     Applies a sequence of filters to a line.
     Assumes the filters are valid functions.

@@ -1,0 +1,57 @@
+[tool.poetry]
+name = 'hostblocker'
+version = '2.0.0'
+description = 'Host file domain blocker builder'
+license = 'GPL-3.0-or-later'
+authors = ['Rui Carlos Gonçalves <rcgoncalves.pt@gmail.com>']
+readme = 'README.md'
+homepage = 'https://rcgoncalves.pt/project/hostblocker/'
+repository = 'https://github.com/rcgoncalves/hostblocker'
+keywords = ['privacy', 'dns']
+include = ["CHANGELOG.md"]
+
+[tool.poetry.scripts]
+hostblocker = 'hostblocker.main:main'
+
+[tool.poetry.dependencies]
+python = '^3.10'
+pyyaml = '^6.0.0'
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.1.1"
+coverage = {extras = ["toml"], version = "^7.4.4"}
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.9.0"
+types-pyyaml = "^6.0.12.20240311"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.coverage.run]
+include = [
+    'hostblocker/**/*.py'
+]
+
+[tool.coverage.report]
+fail_under = 90
+
+
+[tool.ruff]
+line-length = 120
+lint.select = [
+    'F',
+    'E', 'W',
+    'C90',
+    'N',
+    'UP',
+    'YTT', 'ANN', 'S', 'B', 'A', 'C4', 'EM', 'EXE', 'ISC', 'ICN', 'G', 'PIE', 'PYI', 'PT', 'Q', 'RET', 'SIM', 'TID', 'TCH', 'ARG',
+    'PL',
+    'TRY',
+    'RUF',
+]
+lint.ignore = ['S101', 'S603', 'S607', 'RET505', 'PLR2004', 'PT009']
+lint.flake8-quotes.inline-quotes = 'single'

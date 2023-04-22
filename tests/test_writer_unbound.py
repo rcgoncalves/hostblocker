@@ -1,33 +1,34 @@
-import io
 import logging
 import os
 import tempfile
 import unittest
-from typing import List
 
 import hostblocker.writer.unbound
+
 from hostblocker.writer import SOA_DATA
 from hostblocker.writer.unbound import ZONE_TYPE
+
+from typing import Self, IO, ClassVar
 
 
 class TestWriteUnbound(unittest.TestCase):
     """
     Test class for writing unbound.
     """
-    dir_path = os.path.dirname(os.path.abspath(__file__))
-    hosts = ['example.com', 'x.example.com', 'y.example.com', 'example.net',
-             'x.example.net', 'y.example.net', 'z.example.net', 'example.org']
-    hosts_write = ['    local-zone: "example.com" ' + ZONE_TYPE,
-                   '    local-data: "example.com' + SOA_DATA + '"',
-                   '    local-zone: "example.net" ' + ZONE_TYPE,
-                   '    local-data: "example.net' + SOA_DATA + '"',
-                   '    local-zone: "example.org" ' + ZONE_TYPE,
-                   '    local-data: "example.org' + SOA_DATA + '"']
-    header = ['127.0.0.1 localhost localhost.local', '1.2.3.4   example.com',
-              '1.2.3.4   app.example.com']
+    dir_path: ClassVar[str] = os.path.dirname(os.path.abspath(__file__))
+    hosts: ClassVar[list[str]] = ['example.com', 'x.example.com', 'y.example.com', 'example.net',
+                                  'x.example.net', 'y.example.net', 'z.example.net', 'example.org']
+    hosts_write: ClassVar[list[str]] = ['    local-zone: "example.com" ' + ZONE_TYPE,
+                                        '    local-data: "example.com' + SOA_DATA + '"',
+                                        '    local-zone: "example.net" ' + ZONE_TYPE,
+                                        '    local-data: "example.net' + SOA_DATA + '"',
+                                        '    local-zone: "example.org" ' + ZONE_TYPE,
+                                        '    local-data: "example.org' + SOA_DATA + '"']
+    header: ClassVar[list[str]] = ['127.0.0.1 localhost localhost.local', '1.2.3.4   example.com',
+                                   '1.2.3.4   app.example.com']
 
     @staticmethod
-    def read_entries(file: io.TextIOWrapper) -> List[str]:
+    def read_entries(file: IO[str]) -> list[str]:
         """
         Returns the lines of a text file.
 
@@ -36,7 +37,7 @@ class TestWriteUnbound(unittest.TestCase):
         """
         return file.readlines()
 
-    def test_write_hosts_list(self):
+    def test_write_hosts_list(self: Self) -> None:
         with tempfile.TemporaryFile('r+') as file:
             hostblocker.writer.unbound.write_hosts_list(self.hosts, file)
             file.seek(0)
@@ -44,12 +45,11 @@ class TestWriteUnbound(unittest.TestCase):
         self.assertEqual(len(lines), 6)
         self.assertEqual(list(map(str.rstrip, lines)), self.hosts_write)
 
-    def test_write_hosts_list_error(self):
-        with tempfile.TemporaryFile('r') as file:
-            with self.assertLogs(level=logging.ERROR):
-                self.assertTrue(hostblocker.writer.unbound.write_hosts_list(self.hosts, file) > 0)
+    def test_write_hosts_list_error(self: Self) -> None:
+        with tempfile.TemporaryFile('r') as file, self.assertLogs(level=logging.ERROR):
+            self.assertTrue(hostblocker.writer.unbound.write_hosts_list(self.hosts, file) > 0)
 
-    def test_write_header(self):
+    def test_write_header(self: Self) -> None:
         with tempfile.TemporaryFile('r+') as file:
             hostblocker.writer.unbound.write_header(self.dir_path + '/resources/header.txt', file)
             file.seek(0)
@@ -57,21 +57,19 @@ class TestWriteUnbound(unittest.TestCase):
         self.assertEqual(len(lines), 3)
         self.assertEqual(list(map(str.strip, lines)), self.header)
 
-    def test_write_header_error(self):
-        with tempfile.TemporaryFile('w') as file:
-            with self.assertLogs(level=logging.ERROR):
-                self.assertTrue(
-                    hostblocker.writer.unbound.write_header('none', file) > 0
-                )
-        with tempfile.TemporaryFile('r') as file:
-            with self.assertLogs(level=logging.ERROR):
-                self.assertTrue(
-                    hostblocker.writer.unbound.write_header(self.dir_path + '/resources/header.txt',
-                                                            file)
-                    > 0
-                )
+    def test_write_header_error(self: Self) -> None:
+        with tempfile.TemporaryFile('w') as file, self.assertLogs(level=logging.ERROR):
+            self.assertTrue(
+                hostblocker.writer.unbound.write_header('none', file) > 0
+            )
+        with tempfile.TemporaryFile('r') as file, self.assertLogs(level=logging.ERROR):
+            self.assertTrue(
+                hostblocker.writer.unbound.write_header(self.dir_path + '/resources/header.txt',
+                                                        file)
+                > 0
+            )
 
-    def test_write(self):
+    def test_write(self: Self) -> None:
         with tempfile.NamedTemporaryFile('r+') as file:
             hostblocker.writer.unbound.write(self.hosts,
                                              self.dir_path + '/resources/header.txt',
@@ -87,17 +85,17 @@ class TestWriteUnbound(unittest.TestCase):
         self.assertEqual(list(map(str.rstrip, lines[8:14])), self.hosts_write)
         self.assertTrue(lines[14].startswith('### END'))
 
-    def test_write_error(self):
+    def test_write_error(self: Self) -> None:
         with self.assertLogs(level=logging.ERROR):
             self.assertTrue(
                 hostblocker.writer.unbound.write([],
                                                  self.dir_path + '/resources/header.txt',
-                                                 '/tmp/invalid/output/path/file.txt')
+                                                 '/tmp/invalid/output/path/file.txt')  # noqa: S108
                 > 0
             )
 
     @classmethod
-    def setUpClass(cls):
+    def set_up_class(cls: type[Self]) -> None:
         logging.basicConfig(level=logging.CRITICAL)
 
 

@@ -3,8 +3,8 @@
 ## About
 *HostBlocker* is an application that builds lists to block known *problematic* domains (e.g., associated to Spam, malware, tracking).
 It takes a configuration file with multiple lists of such domains, and builds a unified output file, with a configurable format (currently it supports `/etc/hosts`, Dnsmasq, Bind/RPZ and Unbound formats).
-When using Bind output format, it can group multiple sub-domains under a common wildcard domain, in case both the base domain and certain number of different sub-domains are present.
-For Unbound, sub-domain of blocked domains are discarded, as blocking a domain automatically blocks a sub-domain.  With Unbound format, SOA records are also generated (which allows to define the TTL for NXDOMAIN responses).
+When using Bind output format, it can group multiple subdomains under a common wildcard domain, in case both the base domain and certain number of different subdomains are present.
+For Unbound, subdomain of blocked domains are discarded, as blocking a domain automatically blocks a subdomain.  With Unbound format, SOA records are also generated (which allows to define the TTL for NXDOMAIN responses).
 Moreover, it allows to specify a blacklist, a whitelist, and a custom header.
 
 Each source list may have a different format.
@@ -45,7 +45,7 @@ The application supports the following options:
 Moreover, certain options can be controlled through environment variables:
 - `HOSTBLOCKER_CACHE_PATH`: cache directory (default: `./cache`).
 - `HOSTBLOCKER_HOSTS_IP`: the IP to use in hosts file (default: `0.0.0.0`)
-- `HOSTBLOCKER_BIND_WILDCARD_MIN_DOMAINS`: minimum number of sub-domains to use a wildcard with Bind.
+- `HOSTBLOCKER_BIND_WILDCARD_MIN_DOMAINS`: minimum number of subdomains to use a wildcard with Bind.
 - `HOSTBLOCKER_UNBOUND_ZONE_TYPE`: zone type to use with Unbound (default: `always_nxdomain`).
 - `HOSTBLOCKER_SOA_*`: SOA record fields (currently SOA records are only generated for Unbound).
 
@@ -56,7 +56,7 @@ The source lists are defined in a YAML file, which contains the list of source U
 ### List of URLs
 The list of URLs is defined by the entry `sources`, which should contain a list of source items.
 Each source item must have the following entries:
-- `url`: the URL of the source list (typically a HTTP(S) URL, but may also be a local file, if using the prefix `file://`).
+- `url`: the URL of the source list (typically an HTTP(S) URL, but may also be a local file, if using the prefix `file://`).
 - `score`: the score of the list.
 
 Additionally, each item may have the following optional properties:
@@ -69,16 +69,29 @@ Besides the mappers and filters specified for each source list, global mappers a
 These functions are applied after the functions specific to the source list.
 
 
-## TODO
+## Development
+
+### TODO
 - Add support to `Last-Modified` HTTP header when using cache.
 - Check if domains are still active.
 - Improve source lists encoding support (namely, allow compressed files).
+
+### Tests
+```bash
+poetry run coverage run -m pytest
+poetry run coverage report -m
+```
+
+```bash
+poetry run ruff check hostblocker/ tests/
+poetry run mypy hostblocker/ tests/
+```
 
 
 ## License
 HostBlocker, a domain blocker file builder
 
-Copyright (C) 2017-2019 Rui Carlos Gonçalves
+Copyright (C) 2017-2024 Rui Carlos Gonçalves
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
