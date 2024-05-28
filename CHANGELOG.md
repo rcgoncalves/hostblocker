@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [2.0.0] - 2024-05-28
+### Changed
+- Migrate to Poetry.
+
+### Removed
+- Remove `setup.py`.
 
 ## [1.4.3] - 2019-07-19
 ### Changed
