@@ -1,0 +1,33 @@
+name: 'Build'
+
+on:
+  push:
+    branches:
+      - '**'
+      - '!main'
+
+jobs:
+  build:
+    name: 'Build'
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: 'Checkout code'
+        uses: 'actions/checkout@v4'
+      - name: 'Install Poetry'
+        run: |
+          pipx install poetry
+      - name: 'Set up Python 3.11'
+        uses: 'actions/setup-python@v5'
+        with:
+          python-version: '3.11'
+          cache: 'poetry'
+      - name: 'Install project'
+        run: |
+          poetry install
+      - name: 'Run tests'
+        run: |
+          poetry run pytest
+      - name: 'Run linter'
+        run: |
+          poetry run ruff check hostblocker/ tests/
+          poetry run mypy hostblocker/ tests/
