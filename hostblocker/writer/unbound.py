@@ -1,17 +1,17 @@
-import io
 import logging
 import os
-from typing import List
+
+from typing import Final, TextIO
 
 from hostblocker.writer import APP_HEADER, SOA_DATA
 
 
-ZONE_TYPE_VAR = 'HOSTBLOCKER_UNBOUND_ZONE_TYPE'
-ZONE_TYPE = os.getenv(ZONE_TYPE_VAR, 'always_nxdomain')
+ZONE_TYPE_VAR: Final[str] = 'HOSTBLOCKER_UNBOUND_ZONE_TYPE'
+ZONE_TYPE: Final[str] = os.getenv(ZONE_TYPE_VAR, 'always_nxdomain')
 
 
 def write(
-        hosts_list: List[str],
+        hosts_list: list[str],
         header: str,
         out: str) -> int:
     """
@@ -35,7 +35,7 @@ def write(
             file.write('server:\n')
             result += write_hosts_list(hosts_list, file)
             file.write('### END HostBlocker Block List\n')
-    except IOError:
+    except OSError:
         logging.exception('IO error writing hosts')
         result += 1
     return result
@@ -43,7 +43,7 @@ def write(
 
 def write_header(
         header: str,
-        file: io.TextIOWrapper) -> int:
+        file: TextIO) -> int:
     """
     Writes the header to the file.
 
@@ -52,20 +52,20 @@ def write_header(
     :return: 0 if no error occurred; 1 if there was an IO error.
     """
     try:
-        with open(header, 'r') as header_file:
+        with open(header) as header_file:
             contents = header_file.read()
             file.write(contents)
             if not contents[-1].isspace():
                 file.write('\n')
-    except IOError:
+    except OSError:
         logging.exception('IO error writing header')
         return 1
     return 0
 
 
 def write_hosts_list(
-        hosts_list: List[str],
-        file: io.TextIOWrapper) -> int:
+        hosts_list: list[str],
+        file: TextIO) -> int:
     """
     Writes the list of hosts to a file.
 
@@ -77,10 +77,10 @@ def write_hosts_list(
     try:
         for host in hosts_list:
             if not host.endswith(prev):
-                file.write('    local-zone: "' + host + '" ' + ZONE_TYPE + '\n')
-                file.write('    local-data: "' + host + SOA_DATA + '"\n')
+                file.write(f'    local-zone: "{host}" {ZONE_TYPE}\n')
+                file.write(f'    local-data: "{host}{SOA_DATA}"\n')
                 prev = host
-    except IOError:
+    except OSError:
         logging.exception('IO error writing hosts list')
         return 1
     return 0

@@ -5,14 +5,16 @@ import unittest
 
 import hostblocker.main
 
-DEBUG_LOG = 'debug.log'
+from typing import Self, Final
+
+DEBUG_LOG: Final[str] = 'debug.log'
 
 
 class TestMain(unittest.TestCase):
     """
     Test class for main.
     """
-    def test_init_args_defaults(self):
+    def test_init_args_defaults(self: Self) -> None:
         sys.argv = ['hostblocker', '-s', 'config/sources.yml']
         args = hostblocker.main.init_args()
         self.assertEqual(args.config, 'config/sources.yml')
@@ -25,7 +27,7 @@ class TestMain(unittest.TestCase):
         self.assertEqual(args.cache, 60)
         self.assertEqual(args.debug, '')
 
-    def test_init_args_all_short(self):
+    def test_init_args_all_short(self: Self) -> None:
         sys.argv = ['hostblocker',
                     '-s', 'sources.yml',
                     '-o', 'out',
@@ -47,7 +49,7 @@ class TestMain(unittest.TestCase):
         self.assertEqual(args.cache, 1)
         self.assertEqual(args.debug, 'debug.log')
 
-    def test_init_args_all_long(self):
+    def test_init_args_all_long(self: Self) -> None:
         sys.argv = ['hostblocker',
                     '--source', 'sources.yml',
                     '--output', 'out',
@@ -69,24 +71,24 @@ class TestMain(unittest.TestCase):
         self.assertEqual(args.cache, 1)
         self.assertEqual(args.debug, 'debug.log')
 
-    def test_init_logging(self):
+    def test_init_logging(self: Self) -> None:
         root_logger = hostblocker.main.init_logging('')
         self.assertTrue(len(root_logger.handlers) > 0)
         self.assertEqual(root_logger.handlers[0].level, logging.ERROR)
 
-    def test_init_logging_debug(self):
+    def test_init_logging_debug(self: Self) -> None:
         root_logger = hostblocker.main.init_logging(DEBUG_LOG)
         self.assertTrue(len(root_logger.handlers) > 1)
         self.assertEqual(root_logger.handlers[0].level, logging.ERROR)
-        self.assertEqual(root_logger.handlers[1].level, logging.DEBUG)
+        self.assertEqual(root_logger.handlers[-1].level, logging.DEBUG)
 
     del_debug_log = False
 
-    def setUp(self):
+    def set_up(self: Self) -> None:
         if not os.path.exists(DEBUG_LOG):
             self.del_debug_log = True
 
-    def tearDown(self):
+    def tear_down(self: Self) -> None:
         if self.del_debug_log and os.path.exists(DEBUG_LOG):
             os.remove(DEBUG_LOG)
 

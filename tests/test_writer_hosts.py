@@ -1,25 +1,25 @@
-import io
 import logging
 import os
 import tempfile
 import unittest
-from typing import List
 
 import hostblocker.writer.hosts
+
+from typing import Self, IO, ClassVar
 
 
 class TestWriteHosts(unittest.TestCase):
     """
     Test class for writing hosts.
     """
-    dir_path = os.path.dirname(os.path.abspath(__file__))
-    hosts = ['example.com', 'example.net', 'example.org']
-    hosts_write = ['0.0.0.0 example.com', '0.0.0.0 example.net', '0.0.0.0 example.org']
-    header = ['127.0.0.1 localhost localhost.local', '1.2.3.4   example.com',
-              '1.2.3.4   app.example.com']
+    dir_path: ClassVar[str] = os.path.dirname(os.path.abspath(__file__))
+    hosts: ClassVar[list[str]] = ['example.com', 'example.net', 'example.org']
+    hosts_write: ClassVar[list[str]] = ['0.0.0.0 example.com', '0.0.0.0 example.net', '0.0.0.0 example.org']
+    header: ClassVar[list[str]] = ['127.0.0.1 localhost localhost.local',
+                                   '1.2.3.4   example.com', '1.2.3.4   app.example.com']
 
     @staticmethod
-    def read_entries(file: io.TextIOWrapper) -> List[str]:
+    def read_entries(file: IO[str]) -> list[str]:
         """
         Returns the lines of a text file.
 
@@ -28,7 +28,7 @@ class TestWriteHosts(unittest.TestCase):
         """
         return file.readlines()
 
-    def test_write_hosts_list(self):
+    def test_write_hosts_list(self: Self) -> None:
         with tempfile.TemporaryFile('r+') as file:
             hostblocker.writer.hosts.write_hosts_list(self.hosts, file)
             file.seek(0)
@@ -36,12 +36,11 @@ class TestWriteHosts(unittest.TestCase):
         self.assertEqual(len(lines), 3)
         self.assertEqual(list(map(str.strip, lines)), self.hosts_write)
 
-    def test_write_hosts_list_error(self):
-        with tempfile.TemporaryFile('r') as file:
-            with self.assertLogs(level=logging.ERROR):
-                self.assertTrue(hostblocker.writer.hosts.write_hosts_list(self.hosts, file) > 0)
+    def test_write_hosts_list_error(self: Self) -> None:
+        with tempfile.TemporaryFile('r') as file, self.assertLogs(level=logging.ERROR):
+            self.assertTrue(hostblocker.writer.hosts.write_hosts_list(self.hosts, file) > 0)
 
-    def test_write_header(self):
+    def test_write_header(self: Self) -> None:
         with tempfile.TemporaryFile('r+') as file:
             hostblocker.writer.hosts.write_header(self.dir_path + '/resources/header.txt', file)
             file.seek(0)
@@ -49,25 +48,17 @@ class TestWriteHosts(unittest.TestCase):
         self.assertEqual(len(lines), 3)
         self.assertEqual(list(map(str.strip, lines)), self.header)
 
-    def test_write_header_error(self):
-        with tempfile.TemporaryFile('w') as file:
-            with self.assertLogs(level=logging.ERROR):
-                self.assertTrue(
-                    hostblocker.writer.hosts.write_header('none', file) > 0
-                )
-        with tempfile.TemporaryFile('r') as file:
-            with self.assertLogs(level=logging.ERROR):
-                self.assertTrue(
-                    hostblocker.writer.hosts.write_header(self.dir_path + '/resources/header.txt',
-                                                          file)
-                    > 0
-                )
+    def test_write_header_error(self: Self) -> None:
+        with tempfile.TemporaryFile('w') as file, self.assertLogs(level=logging.ERROR):
+            self.assertTrue(hostblocker.writer.hosts.write_header('none', file) > 0)
+        with tempfile.TemporaryFile('r') as file, self.assertLogs(level=logging.ERROR):
+            self.assertTrue(
+                hostblocker.writer.hosts.write_header(self.dir_path + '/resources/header.txt', file) > 0
+            )
 
-    def test_write(self):
+    def test_write(self: Self) -> None:
         with tempfile.NamedTemporaryFile('r+') as file:
-            hostblocker.writer.hosts.write(self.hosts,
-                                           self.dir_path + '/resources/header.txt',
-                                           file.name)
+            hostblocker.writer.hosts.write(self.hosts, self.dir_path + '/resources/header.txt', file.name)
             lines = self.read_entries(file)
         self.assertEqual(len(lines), 11)
         self.assertEqual(lines[0], hostblocker.writer.hosts.APP_HEADER)
@@ -78,17 +69,17 @@ class TestWriteHosts(unittest.TestCase):
         self.assertEqual(list(map(str.strip, lines[7:10])), self.hosts_write)
         self.assertTrue(lines[10].startswith('### END'))
 
-    def test_write_error(self):
+    def test_write_error(self: Self) -> None:
         with self.assertLogs(level=logging.ERROR):
             self.assertTrue(
                 hostblocker.writer.hosts.write([],
                                                self.dir_path + '/resources/header.txt',
-                                               '/tmp/invalid/output/path/file.txt')
+                                               '/tmp/invalid/output/path/file.txt')  # noqa: S108
                 > 0
             )
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls: type[Self]) -> None:
         logging.basicConfig(level=logging.CRITICAL)
 
 

@@ -230,10 +230,6 @@ sources:
       score: 20
       mappers:
           - 'remove_adblock_text'
-    - url: 'http://gnuzilla.gnu.org/filters/blacklist.txt'
-      score: 30
-      mappers:
-          - 'remove_adblock_text'
     - url: 'https://raw.githubusercontent.com/IDKwhattoputhere/uBlock-Filters-Plus/master/uBlock-Filters-Plus.txt'
       score: 15
       mappers:

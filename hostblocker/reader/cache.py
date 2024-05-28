@@ -2,20 +2,22 @@ import hashlib
 import logging
 import os
 import time
-from typing import List, Union
+
+from typing import Final
 
 
-CACHE_VAR = 'HOSTBLOCKER_CACHE_PATH'
-CACHE_DIR = os.getenv(CACHE_VAR, 'cache')
+CACHE_VAR: Final[str] = 'HOSTBLOCKER_CACHE_PATH'
+# This is mostly a constant, except for tests.
+CACHE_DIR: str = os.getenv(CACHE_VAR, 'cache')
 
 
 def write(
         resource: str,
-        lines: List[bytearray]) -> None:
+        lines: list[bytes]) -> bool:
     """
     Writes lines to a cache file.
 
-    :param resource: the identifier (URL) of the resource to lookup.
+    :param resource: the identifier (URL) of the resource to write.
     :param lines: the lines to write.
     """
     try:
@@ -25,13 +27,16 @@ def write(
         with open(cache_file, 'wb') as file:
             for line in lines:
                 file.write(line)
-    except IOError:
+    except OSError:
         logging.exception('IO error writing cache')
+        return False
+    else:
+        return True
 
 
 def read(
         resource: str,
-        cache: int=1) -> Union[List[bytearray], None]:
+        cache: int=1) -> list[bytes] | None:
     """
     Reads lines from a cache file.
 
@@ -53,7 +58,7 @@ def read(
         else:
             with open(cache_file, 'rb') as file:
                 lines = file.readlines()
-    except IOError:
+    except OSError:
         logging.exception('IO error reading cache')
         lines = None
     return lines

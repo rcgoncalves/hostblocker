@@ -7,33 +7,42 @@ import unittest
 import hostblocker.reader.cache
 import hostblocker.reader.fetch
 
+from typing import Self, Final
 
-URL = 'https://example.com/file.txt'
-CACHE_DIR = os.path.dirname(os.path.abspath(__file__)) + '/resources'
-CACHE_NAME = hashlib.sha256(URL.encode('utf-8')).hexdigest()
+
+URL: Final[str] = 'https://example.com/file.txt'
+CACHE_DIR: Final[str] = os.path.dirname(os.path.abspath(__file__)) + '/resources'
+CACHE_NAME: Final[str] = hashlib.sha256(URL.encode('utf-8')).hexdigest()
 
 
 class TestFetch(unittest.TestCase):
     """
     Test class for fetch functions.
     """
-    def test_get_lines_cache(self):
+    def test_get_lines_cache(self: Self) -> None:
         hostblocker.reader.cache.CACHE_DIR = CACHE_DIR
         lines = hostblocker.reader.fetch.get_lines(URL, sys.maxsize)
-        lines_file = hostblocker.reader.fetch.get_lines_no_cache('file://' + CACHE_DIR
-                                                                 + '/' + CACHE_NAME)
-        self.assertEqual(lines, lines_file)
+        lines_file = hostblocker.reader.fetch.get_lines_no_cache(f'file://{CACHE_DIR}/{CACHE_NAME}')
+        assert lines == lines_file
 
-    def test_write_read_cache(self):
-        hostblocker.reader.fetch.CACHE_DIR = '/tmp'
-        lines = hostblocker.reader.fetch.get_lines_no_cache('file://' + CACHE_DIR + '/'
-                                                            + CACHE_NAME)
-        hostblocker.reader.cache.write(URL, lines)
+    def test_write_read_cache(self: Self) -> None:
+        hostblocker.reader.cache.CACHE_DIR = '/tmp'  # noqa: S108
+        lines = hostblocker.reader.fetch.get_lines_no_cache(f'file://{CACHE_DIR}/{CACHE_NAME}')
+        assert lines
+        assert hostblocker.reader.cache.write(URL, lines)
         lines_cache = hostblocker.reader.cache.read(URL)
-        self.assertEqual(lines, lines_cache)
+        assert lines == lines_cache
+
+    def test_read_cache_fail(self: Self) -> None:
+        hostblocker.reader.cache.CACHE_DIR = '/tmp/x'  # noqa: S108
+        assert not hostblocker.reader.cache.read(URL)
+
+    def test_write_cache_fail(self: Self) -> None:
+        hostblocker.reader.cache.CACHE_DIR = '/xpto/abc'
+        assert not hostblocker.reader.cache.write(URL, [b'x', b'y'])
 
     @classmethod
-    def setUpClass(cls):
+    def set_up_class(cls: type[Self]) -> None:
         logging.basicConfig(level=logging.CRITICAL)
 
 
