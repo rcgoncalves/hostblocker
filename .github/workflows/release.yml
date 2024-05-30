@@ -47,8 +47,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: '${{ github.ref }}'
-          name: 'Hostblocker ${{ github.ref }}'
+          tag_name: '${{ github.ref_name }}'
+          name: 'Hostblocker ${{ github.ref_name }}'
           files: |
             dist/hostblocker-${{ env.VERSION }}.tar.gz
             dist/hostblocker-${{ env.VERSION }}-py3-none-any.whl
