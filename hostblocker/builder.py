@@ -7,6 +7,7 @@ import hostblocker.reader.fetch
 
 from typing import Any
 
+
 def apply_blacklist(
         hosts: dict[str, int],
         blacklist: str,
@@ -21,7 +22,7 @@ def apply_blacklist(
     """
     if blacklist:
         try:
-            with open(blacklist) as file:
+            with open(blacklist, encoding='utf-8') as file:
                 for line in file.readlines():
                     domain = line.strip()
                     if hosts[domain] >= threshold:
@@ -50,7 +51,7 @@ def apply_whitelist(
     """
     if whitelist:
         try:
-            with open(whitelist) as file:
+            with open(whitelist, encoding='utf-8') as file:
                 for line in file.readlines():
                     domain = line.strip()
                     if hosts[domain] < threshold:

@@ -36,7 +36,7 @@ def write(
 
 def read(
         resource: str,
-        cache: int=1) -> list[bytes] | None:
+        cache: int = 1) -> list[bytes] | None:
     """
     Reads lines from a cache file.
 

@@ -29,7 +29,7 @@ class TestWriteDnsmasq(unittest.TestCase):
         return file.readlines()
 
     def test_write_hosts_list(self: Self) -> None:
-        with tempfile.TemporaryFile('r+') as file:
+        with tempfile.TemporaryFile('r+', encoding='utf-8') as file:
             hostblocker.writer.dnsmasq.write_hosts_list(self.hosts, file)
             file.seek(0)
             lines = self.read_entries(file)
@@ -37,11 +37,11 @@ class TestWriteDnsmasq(unittest.TestCase):
         self.assertEqual(list(map(str.strip, lines)), self.hosts_write)
 
     def test_write_hosts_list_error(self: Self) -> None:
-        with tempfile.TemporaryFile('r') as file, self.assertLogs(level=logging.ERROR):
+        with tempfile.TemporaryFile('r', encoding='utf-8') as file, self.assertLogs(level=logging.ERROR):
             self.assertTrue(hostblocker.writer.dnsmasq.write_hosts_list(self.hosts, file) > 0)
 
     def test_write_header(self: Self) -> None:
-        with tempfile.TemporaryFile('r+') as file:
+        with tempfile.TemporaryFile('r+', encoding='utf-8') as file:
             hostblocker.writer.dnsmasq.write_header(self.dir_path + '/resources/header.txt', file)
             file.seek(0)
             lines = self.read_entries(file)
@@ -49,15 +49,15 @@ class TestWriteDnsmasq(unittest.TestCase):
         self.assertEqual(list(map(str.strip, lines)), self.header)
 
     def test_write_header_error(self: Self) -> None:
-        with tempfile.TemporaryFile('w') as file, self.assertLogs(level=logging.ERROR):
+        with tempfile.TemporaryFile('w', encoding='utf-8') as file, self.assertLogs(level=logging.ERROR):
             self.assertTrue(hostblocker.writer.dnsmasq.write_header('none', file) > 0)
-        with tempfile.TemporaryFile('r') as file, self.assertLogs(level=logging.ERROR):
+        with tempfile.TemporaryFile('r', encoding='utf-8') as file, self.assertLogs(level=logging.ERROR):
             self.assertTrue(
                 hostblocker.writer.dnsmasq.write_header(self.dir_path + '/resources/header.txt', file) > 0
             )
 
     def test_write(self: Self) -> None:
-        with tempfile.NamedTemporaryFile('r+') as file:
+        with tempfile.NamedTemporaryFile('r+', encoding='utf-8') as file:
             hostblocker.writer.dnsmasq.write(self.hosts, self.dir_path + '/resources/header.txt', file.name)
             lines = self.read_entries(file)
         self.assertEqual(len(lines), 11)
