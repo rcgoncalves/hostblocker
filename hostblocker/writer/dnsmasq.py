@@ -20,7 +20,7 @@ def write(
     """
     result = 0
     try:
-        with open(out, 'w') as file:
+        with open(out, 'w', encoding='utf-8') as file:
             file.write(APP_HEADER)
             if header:
                 file.write('### BEGIN HostBlocker Header\n')
@@ -46,7 +46,7 @@ def write_header(
     :return: 0 if no error occurred; 1 if there was an IO error.
     """
     try:
-        with open(header) as header_file:
+        with open(header, encoding='utf-8') as header_file:
             contents = header_file.read()
             file.write(contents)
             if not contents[-1].isspace():

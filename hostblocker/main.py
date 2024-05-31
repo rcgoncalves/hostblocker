@@ -73,6 +73,7 @@ def main() -> int:
     :return:
     0 in case of success.
     1 if there was an error reading the YAML config file.
+    2 if the output format is invalid
     """
     args = init_args()
     init_logging(args.debug)
@@ -84,7 +85,7 @@ def main() -> int:
     logging.debug('blacklist file: %s', args.blacklist)
     logging.debug('minimum score: %d', args.score)
     logging.debug('max cache: %d', args.cache)
-    with open(args.config) as stream:
+    with open(args.config, encoding='utf-8') as stream:
         try:
             config = yaml.safe_load(stream)
         except yaml.YAMLError:

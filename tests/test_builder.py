@@ -64,7 +64,7 @@ class TestProcessHosts(unittest.TestCase):
         hosts = hostblocker.builder.process_lines(lines, hosts, ['remove_comments'], ['is_not_blank'])
         hosts = hostblocker.builder.apply_whitelist(hosts, f'{self.dir_path}/resources/apply.txt')
         for key in hosts:
-            if key in ['example.com', 'app.example.com']:
+            if key in {'example.com', 'app.example.com'}:
                 self.assertEqual(hosts[key], 0)
             else:
                 self.assertEqual(hosts[key], 1)
@@ -81,7 +81,7 @@ class TestProcessHosts(unittest.TestCase):
         hosts = hostblocker.builder.process_lines(lines, hosts, ['remove_comments'], ['is_not_blank'])
         hosts = hostblocker.builder.apply_blacklist(hosts, f'{self.dir_path}/resources/apply.txt')
         for key in hosts:
-            if key in ['example.com', 'app.example.com']:
+            if key in {'example.com', 'app.example.com'}:
                 self.assertEqual(hosts[key], 9999)
             else:
                 self.assertEqual(hosts[key], 1)

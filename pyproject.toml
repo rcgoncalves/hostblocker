@@ -43,6 +43,7 @@ fail_under = 90
 
 [tool.ruff]
 line-length = 120
+lint.preview = true
 lint.select = [
     'F',
     'E', 'W',

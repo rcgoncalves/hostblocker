@@ -23,7 +23,7 @@ class TestFetch(unittest.TestCase):
         hostblocker.reader.cache.CACHE_DIR = CACHE_DIR
         lines = hostblocker.reader.fetch.get_lines(URL, sys.maxsize)
         lines_file = hostblocker.reader.fetch.get_lines_no_cache(f'file://{CACHE_DIR}/{CACHE_NAME}')
-        assert lines == lines_file
+        self.assertEqual(lines, lines_file)
 
     def test_write_read_cache(self: Self) -> None:
         hostblocker.reader.cache.CACHE_DIR = '/tmp'  # noqa: S108
@@ -31,15 +31,15 @@ class TestFetch(unittest.TestCase):
         assert lines
         assert hostblocker.reader.cache.write(URL, lines)
         lines_cache = hostblocker.reader.cache.read(URL)
-        assert lines == lines_cache
+        self.assertEqual(lines, lines_cache)
 
     def test_read_cache_fail(self: Self) -> None:
         hostblocker.reader.cache.CACHE_DIR = '/tmp/x'  # noqa: S108
-        assert not hostblocker.reader.cache.read(URL)
+        self.assertFalse(hostblocker.reader.cache.read(URL))
 
     def test_write_cache_fail(self: Self) -> None:
         hostblocker.reader.cache.CACHE_DIR = '/xpto/abc'
-        assert not hostblocker.reader.cache.write(URL, [b'x', b'y'])
+        self.assertFalse(hostblocker.reader.cache.write(URL, [b'x', b'y']))
 
     @classmethod
     def set_up_class(cls: type[Self]) -> None:
