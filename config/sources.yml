@@ -34,7 +34,7 @@ sources:
       score: 30
     - url: 'https://raw.githubusercontent.com/Dawsey21/Lists/master/main-blacklist.txt'
       score: 20
-    - url: 'http://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml&showintro=1&startdate%5Bday%5D=01&startdate%5Bmonth%5D=01&startdate%5Byear%5D=2000&mimetype=plaintext'
+    - url: 'https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml&showintro=1&startdate%5Bday%5D=01&startdate%5Bmonth%5D=01&startdate%5Byear%5D=2000&mimetype=plaintext'
       score: 20
     ## Hosts files
     - url: 'https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.2o7Net/hosts'
@@ -74,7 +74,7 @@ sources:
       mappers:
           - 'remove_ip_zero'
       header: 20
-    - url: 'http://someonewhocares.org/hosts/hosts'
+    - url: 'https://someonewhocares.org/hosts/hosts'
       score: 20
       mappers:
           - 'remove_ip_local'

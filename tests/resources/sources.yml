@@ -1,0 +1,7 @@
+mappers:
+    - 'trim'
+
+filters:
+    - 'is_not_blank'
+
+sources: []

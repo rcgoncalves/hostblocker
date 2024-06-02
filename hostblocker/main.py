@@ -72,8 +72,9 @@ def main() -> int:
 
     :return:
     0 in case of success.
-    1 if there was an error reading the YAML config file.
-    2 if the output format is invalid
+    2 if the options specified are not valid
+    3 if there was an error reading the YAML config file.
+    4 if the output format is invalid
     """
     args = init_args()
     init_logging(args.debug)
@@ -85,12 +86,12 @@ def main() -> int:
     logging.debug('blacklist file: %s', args.blacklist)
     logging.debug('minimum score: %d', args.score)
     logging.debug('max cache: %d', args.cache)
-    with open(args.config, encoding='utf-8') as stream:
-        try:
+    try:
+        with open(args.config, encoding='utf-8') as stream:
             config = yaml.safe_load(stream)
-        except yaml.YAMLError:
-            logging.exception('error reading sources YAML')
-            sys.exit(1)
+    except (FileNotFoundError, yaml.YAMLError):
+        logging.exception('error reading sources YAML')
+        sys.exit(3)
     hosts = hostblocker.builder.build_from_sources(config, args.cache)
     hosts = hostblocker.builder.apply_blacklist(hosts, args.blacklist, args.score)
     hosts = hostblocker.builder.apply_whitelist(hosts, args.whitelist, args.score)
@@ -100,7 +101,7 @@ def main() -> int:
         mod.write(hosts_list, args.header, args.out)
     except ModuleNotFoundError:
         logging.exception('invalid output format: %s', args.format)
-        sys.exit(2)
+        sys.exit(4)
     return 0
 
 
