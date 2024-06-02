@@ -1,78 +1,84 @@
-import unittest
+import pytest
 
 import hostblocker.functions.mappers
 
-from typing import Self
+
+@pytest.mark.parametrize(('line_in', 'line_out'), [
+    ('#               MalwareDomainList.com Hosts List           #', ''),
+    ('#', ''),
+    ('12345 67890 # List', '12345 67890 '),
+    ('1qaz2wsx ', '1qaz2wsx '),
+])
+def test_remove_comments(line_in: str, line_out: str) -> None:
+    assert hostblocker.functions.mappers.remove_comments(line_in) == line_out
 
 
-class TestMappers(unittest.TestCase):
-    """
-    Test class for mappers.
-    """
-    def test_remove_comments(self: Self) -> None:
-        self.assertEqual(
-            hostblocker.functions.mappers.remove_comments(
-                '#               MalwareDomainList.com Hosts List           #'
-            ),
-            ''
-        )
-        self.assertEqual(hostblocker.functions.mappers.remove_comments('#'), '')
-        self.assertEqual(hostblocker.functions.mappers.remove_comments('12345 67890 # List'), '12345 67890 ')
-        self.assertEqual(hostblocker.functions.mappers.remove_comments('1qaz2wsx '), '1qaz2wsx ')
-
-    def test_remove_comments_ab(self: Self) -> None:
-        self.assertEqual(
-            hostblocker.functions.mappers.remove_adblock_comments('! uBlock Origin -- Resource-abuse filters'),
-            ''
-        )
-        self.assertEqual(hostblocker.functions.mappers.remove_adblock_comments('!'), '')
-        self.assertEqual(hostblocker.functions.mappers.remove_adblock_comments('1qaz2wsx'), '1qaz2wsx')
-
-    def test_remove_ip_local(self: Self) -> None:
-        self.assertEqual(hostblocker.functions.mappers.remove_ip_local('127.0.0.1  localhost'), '  localhost')
-        self.assertEqual(hostblocker.functions.mappers.remove_ip_local('127.0.0.1 example.com'), ' example.com')
-        self.assertEqual(hostblocker.functions.mappers.remove_ip_local('127.0.0.1example.com'), 'example.com')
-        self.assertEqual(
-            hostblocker.functions.mappers.remove_ip_local('127.0.0.0 example.com'),
-            '127.0.0.0 example.com'
-        )
-
-    def test_remove_ip_zero(self: Self) -> None:
-        self.assertEqual(hostblocker.functions.mappers.remove_ip_zero('0.0.0.0  localhost'), '  localhost')
-        self.assertEqual(hostblocker.functions.mappers.remove_ip_zero('0.0.0.0 example.com'), ' example.com')
-        self.assertEqual(hostblocker.functions.mappers.remove_ip_zero('0.0.0.0example.com'), 'example.com')
-        self.assertEqual(hostblocker.functions.mappers.remove_ip_zero('0.0.0.1 example.com'), '0.0.0.1 example.com')
-
-    def test_remove_dot(self: Self) -> None:
-        self.assertEqual(hostblocker.functions.mappers.remove_dot('.example.com'), 'example.com')
-        self.assertEqual(hostblocker.functions.mappers.remove_dot('example.com'), 'example.com')
-
-    def test_remove_adblock_text(self: Self) -> None:
-        self.assertEqual(hostblocker.functions.mappers.remove_adblock_text('||example.com^$scripts'), '')
-        self.assertEqual(hostblocker.functions.mappers.remove_adblock_text('||example.com^$third-party'), 'example.com')
-        self.assertEqual(hostblocker.functions.mappers.remove_adblock_text('||example.com^$popup'), 'example.com')
-        self.assertEqual(hostblocker.functions.mappers.remove_adblock_text('||example.com^$document'), 'example.com')
-        self.assertEqual(
-            hostblocker.functions.mappers.remove_adblock_text('||example.com^$popup,third-party'),
-            'example.com'
-        )
-        self.assertEqual(
-            hostblocker.functions.mappers.remove_adblock_text('||example.com^$document,popup'),
-            'example.com'
-        )
-        self.assertEqual(hostblocker.functions.mappers.remove_adblock_text('/coinhive.min.js'), '')
-        self.assertEqual(hostblocker.functions.mappers.remove_adblock_text('||example.com^'), 'example.com')
-
-    def test_remove_xml_tags(self: Self) -> None:
-        self.assertEqual(hostblocker.functions.mappers.remove_xml_tags(' <xml>example.com</xml> '), ' example.com ')
-        self.assertEqual(hostblocker.functions.mappers.remove_xml_tags(' example.com</xml> '), ' example.com ')
-        self.assertEqual(hostblocker.functions.mappers.remove_xml_tags(' example.com '), ' example.com ')
-
-    def test_trim(self: Self) -> None:
-        self.assertEqual(hostblocker.functions.mappers.trim('  example.com  '), 'example.com')
-        self.assertEqual(hostblocker.functions.mappers.trim('example.com\n\r'), 'example.com')
-        self.assertEqual(hostblocker.functions.mappers.trim('\t  example.com  '), 'example.com')
+@pytest.mark.parametrize(('line_in', 'line_out'), [
+    ('! uBlock Origin -- Resource-abuse filters', ''),
+    ('!', ''),
+    ('1qaz2wsx', '1qaz2wsx'),
+])
+def test_remove_comments_ab(line_in: str, line_out: str) -> None:
+    assert hostblocker.functions.mappers.remove_adblock_comments(line_in) == line_out
 
 
-if __name__ == '__main__':
-    unittest.main()
+@pytest.mark.parametrize(('line_in', 'line_out'), [
+    ('127.0.0.1 localhost example.com', ' localhost example.com'),
+    ('127.0.0.1  localhost', '  localhost'),
+    ('127.0.0.1 example.com  ', ' example.com  '),
+    ('127.0.0.1example.com', 'example.com'),
+    ('127.0.0.0 example.com', '127.0.0.0 example.com'),
+])
+def test_remove_ip_local(line_in: str, line_out: str) -> None:
+    assert hostblocker.functions.mappers.remove_ip_local(line_in) == line_out
+
+
+@pytest.mark.parametrize(('line_in', 'line_out'), [
+    ('0.0.0.0 localhost example.com', ' localhost example.com'),
+    ('0.0.0.0  localhost', '  localhost'),
+    ('0.0.0.0 example.com  ', ' example.com  '),
+    ('0.0.0.0example.com', 'example.com'),
+    ('0.0.0.1 example.com', '0.0.0.1 example.com'),
+])
+def test_remove_ip_zero(line_in: str, line_out: str) -> None:
+    assert hostblocker.functions.mappers.remove_ip_zero(line_in) == line_out
+
+
+@pytest.mark.parametrize(('line_in', 'line_out'), [
+    ('.example.com', 'example.com'),
+    ('example.com', 'example.com'),
+])
+def test_remove_dot(line_in: str, line_out: str) -> None:
+    assert hostblocker.functions.mappers.remove_dot(line_in) == line_out
+
+
+@pytest.mark.parametrize(('line_in', 'line_out'), [
+    ('||example.com^$scripts', ''),
+    ('||example.com^$third-party', 'example.com'),
+    ('||example.com^$popup', 'example.com'),
+    ('||example.com^$document', 'example.com'),
+    ('||example.com^$popup,third-party', 'example.com'),
+    ('||example.com^$document,popup', 'example.com'),
+    ('/coinhive.min.js', ''),
+    ('||example.com^', 'example.com'),
+])
+def test_remove_adblock_text(line_in: str, line_out: str) -> None:
+    assert hostblocker.functions.mappers.remove_adblock_text(line_in) == line_out
+
+
+@pytest.mark.parametrize(('line_in', 'line_out'), [
+    (' <xml>example.com</xml> ', ' example.com '),
+    (' example.com</xml> ', ' example.com '),
+    (' example.com ', ' example.com '),
+])
+def test_remove_xml_tags(line_in: str, line_out: str) -> None:
+    assert hostblocker.functions.mappers.remove_xml_tags(line_in) == line_out
+
+
+@pytest.mark.parametrize(('line_in', 'line_out'), [
+    ('  example.com  ', 'example.com'),
+    ('example.com\n\r', 'example.com'),
+    ('\t  example.com  ', 'example.com'),
+])
+def test_trim(line_in: str, line_out: str) -> None:
+    assert hostblocker.functions.mappers.trim(line_in) == line_out

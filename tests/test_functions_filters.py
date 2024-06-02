@@ -1,52 +1,81 @@
-import logging
-import unittest
+import pytest
 
 import hostblocker.functions.filters
 
-from typing import Self
+
+@pytest.mark.parametrize('line', [
+    '',
+    ' ',
+    '  \t     ',
+])
+def test_is_not_blank_false(line: str) -> None:
+    assert not hostblocker.functions.filters.is_not_blank(line)
 
 
-class TestFilters(unittest.TestCase):
-    """
-    Test class for filters.
-    """
-    def test_is_not_blank(self: Self) -> None:
-        self.assertFalse(hostblocker.functions.filters.is_not_blank(''))
-        self.assertFalse(hostblocker.functions.filters.is_not_blank(' '))
-        self.assertTrue(hostblocker.functions.filters.is_not_blank(' example.com'))
-
-    def test_is_not_2nd_level_domain(self: Self) -> None:
-        self.assertFalse(hostblocker.functions.filters.is_not_2nd_level_domain('example.com'))
-        self.assertTrue(hostblocker.functions.filters.is_not_2nd_level_domain('sub.example.com'))
-
-    def test_is_not_top_level_domain(self: Self) -> None:
-        self.assertTrue(hostblocker.functions.filters.is_not_top_level_domain('example.com'))
-        self.assertFalse(hostblocker.functions.filters.is_not_top_level_domain('com'))
-        self.assertFalse(hostblocker.functions.filters.is_not_top_level_domain('localhost'))
-
-    def test_is_valid_domain(self: Self) -> None:
-        self.assertTrue(hostblocker.functions.filters.is_valid_domain('example.com'))
-        self.assertFalse(hostblocker.functions.filters.is_valid_domain('example.com.'))
-        self.assertFalse(hostblocker.functions.filters.is_valid_domain('.example.com'))
-        self.assertFalse(hostblocker.functions.filters.is_valid_domain('-example.com'))
-        self.assertFalse(
-            hostblocker.functions.filters.is_valid_domain(
-                '1234567890123456789012345678901234567890123456789012345678901234.com'
-            )
-        )
-        self.assertFalse(
-            hostblocker.functions.filters.is_valid_domain(
-                '1234567890123456789012345678901234567890123456789012345678901234.'
-                '1234567890123456789012345678901234567890123456789012345678901234.'
-                '1234567890123456789012345678901234567890123456789012345678901234.'
-                '1234567890123456789012345678901234567890123456789012345678901234.com'
-            )
-        )
-
-    @classmethod
-    def set_up_class(cls: type[Self]) -> None:
-        logging.basicConfig(level=logging.CRITICAL)
+@pytest.mark.parametrize('line', [
+    'example.com',
+    'sub.example.com',
+])
+def test_is_not_blank_true(line: str) -> None:
+    assert hostblocker.functions.filters.is_not_blank(line)
 
 
-if __name__ == '__main__':
-    unittest.main()
+@pytest.mark.parametrize('line', [
+    'example.com',
+    'x.zip',
+    'a.dev',
+])
+def test_is_not_2nd_level_domain_false(line: str) -> None:
+    assert not hostblocker.functions.filters.is_not_2nd_level_domain(line)
+
+
+@pytest.mark.parametrize('line', [
+    'sub.example.com',
+    'sub1.sub2.x.zip',
+    'a.b.c.d.e.f.dev',
+])
+def test_is_not_2nd_level_domain_true(line: str) -> None:
+    assert hostblocker.functions.filters.is_not_2nd_level_domain(line)
+
+
+@pytest.mark.parametrize('line', [
+    'com',
+    'localhost',
+    'net',
+    'org',
+])
+def test_is_not_top_level_domain_false(line: str) -> None:
+    assert not hostblocker.functions.filters.is_not_top_level_domain(line)
+
+
+@pytest.mark.parametrize('line', [
+    'example.com',
+    'sub.example.net',
+    'a.b.c.d.example.org',
+])
+def test_is_not_top_level_domain_true(line: str) -> None:
+    assert hostblocker.functions.filters.is_not_top_level_domain(line)
+
+
+@pytest.mark.parametrize('line', [
+    'example .com',
+    'example.com.',
+    '.example.com',
+    '-example.com',
+    '1234567890123456789012345678901234567890123456789012345678901234.com',
+    '1234567890123456789012345678901234567890123456789012345678901234.'
+    '1234567890123456789012345678901234567890123456789012345678901234.'
+    '1234567890123456789012345678901234567890123456789012345678901234.'
+    '1234567890123456789012345678901234567890123456789012345678901234.com'
+])
+def test_is_valid_domain_false(line: str) -> None:
+    assert not hostblocker.functions.filters.is_valid_domain(line)
+
+
+@pytest.mark.parametrize('line', [
+    'example.com',
+    'sub.example.zip',
+    'a.b.c.d.example.workx',
+])
+def test_is_valid_domain_true(line: str) -> None:
+    assert hostblocker.functions.filters.is_valid_domain(line)
