@@ -26,7 +26,11 @@ jobs:
           poetry install
       - name: 'Run tests'
         run: |
-          poetry run pytest
+          poetry run coverage run -m pytest
+      - name: 'Coverage report'
+        id: 'coverage-report'
+        run: |
+          poetry run coverage report -m
       - name: 'Run linter'
         run: |
           poetry run ruff check hostblocker/ tests/
