@@ -36,6 +36,10 @@ sources:
       score: 20
     - url: 'https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml&showintro=1&startdate%5Bday%5D=01&startdate%5Bmonth%5D=01&startdate%5Byear%5D=2000&mimetype=plaintext'
       score: 20
+    - url: 'https://raw.githubusercontent.com/badmojr/1Hosts/master/Lite/domains.txt'
+      score: 15
+    - url: 'https://raw.githubusercontent.com/sjhgvr/oisd/refs/heads/main/domainswild2_big.txt'
+      score: 20
     ## Hosts files
     - url: 'https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.2o7Net/hosts'
       score: 30
@@ -168,7 +172,7 @@ sources:
           - 'remove_adblock_text'
     - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/SpywareFilter/sections/mobile.txt'
       score: 20
-      mapper:
+      mappers:
           - 'remove_adblock_text'
     - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/SpywareFilter/sections/specific.txt'
       score: 20
@@ -228,10 +232,6 @@ sources:
           - 'remove_adblock_text'
     - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/AnnoyancesFilter/Widgets/sections/widgets.txt'
       score: 20
-      mappers:
-          - 'remove_adblock_text'
-    - url: 'https://raw.githubusercontent.com/IDKwhattoputhere/uBlock-Filters-Plus/master/uBlock-Filters-Plus.txt'
-      score: 15
       mappers:
           - 'remove_adblock_text'
     - url: 'https://raw.githubusercontent.com/jspenguin2017/uBlockProtector/master/uBlockProtectorList.txt'
