@@ -48,6 +48,16 @@ def remove_ip_zero(line: str) -> str:
     return remove_ip(line, '0.0.0.0')  # noqa: S104
 
 
+def remove_ipv6_zero(line: str) -> str:
+    """
+    Removes zero IPv6 (::) from a line.
+
+    :param line: the line.
+    :return: the line without the zero IPv6.
+    """
+    return remove_ip(line, '::')
+
+
 def remove_ip(
         line: str,
         ip: str) -> str:

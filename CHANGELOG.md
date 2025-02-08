@@ -1,6 +1,11 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- Add support for removing IPv6 0 address (`::`).
+
+### Fixed
+- Fix bug handling IPv6 in a blocklist.
 
 ## [2.0.0] - 2024-05-28
 ### Changed
