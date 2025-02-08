@@ -3,6 +3,8 @@
 ## [Unreleased]
 ### Added
 - Add support for removing IPv6 0 address (`::`).
+- Restore `setup.py` to enable installation without PIP.
+- Add support for `-v` (version) option.
 
 ### Fixed
 - Fix bug handling IPv6 in a blocklist.

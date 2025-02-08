@@ -5,6 +5,7 @@ import importlib
 import logging
 import sys
 import yaml
+import importlib.metadata
 
 import hostblocker.builder
 
@@ -63,6 +64,9 @@ def init_args() -> argparse.Namespace:
     parser.add_argument('-d', '--debug',
                         help=argparse.SUPPRESS,  # Enable debug output with the given file
                         required=False, default='', dest='debug')
+    parser.add_argument('-v', '--version',
+                        help='Prints version and exits',
+                        action='version', version=importlib.metadata.version('hostblocker'))
     return parser.parse_args()
 
 

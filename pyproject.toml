@@ -16,6 +16,7 @@ hostblocker = 'hostblocker.main:main'
 [tool.poetry.dependencies]
 python = '^3.11'
 pyyaml = '^6.0.0'
+setuptools = '^75.8.0'
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.1.1"
@@ -28,8 +29,8 @@ ruff = "^0.4.6"
 
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
 
 
 [tool.pytest.ini_options]
