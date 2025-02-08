@@ -24,13 +24,6 @@ The cache directory can be specified with the environment variable `HOSTBLOCKER_
 * [Issues](https://github.com/rcgoncalves/hostblocker/issues)
 
 
-## Installation
-To install this application simply run the command `python setup.py install`.
-This will make the command `hostblocker` available.
-
-This application requires Python 3, and the Python packages `yaml`, `setuptools`, and `coverage`.
-
-
 ## Usage
 The application supports the following options:
 - `-s`/`--source`: path to the YAML sources list.
@@ -69,29 +62,10 @@ Besides the mappers and filters specified for each source list, global mappers a
 These functions are applied after the functions specific to the source list.
 
 
-## Development
-
-### TODO
-- Add support to `Last-Modified` HTTP header when using cache.
-- Check if domains are still active.
-- Improve source lists encoding support (namely, allow compressed files).
-
-### Tests
-```bash
-poetry run coverage run -m pytest
-poetry run coverage report -m
-```
-
-```bash
-poetry run ruff check hostblocker/ tests/
-poetry run mypy hostblocker/ tests/
-```
-
-
 ## License
 HostBlocker, a domain blocker file builder
 
-Copyright (C) 2017-2024 Rui Carlos Gonçalves
+Copyright (C) 2017-2025 Rui Carlos Gonçalves
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
