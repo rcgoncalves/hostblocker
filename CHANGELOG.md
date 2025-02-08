@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [2.1.0] 2025-02-08
 ### Added
 - Add support for removing IPv6 0 address (`::`).
 - Restore `setup.py` to enable installation without PIP.
