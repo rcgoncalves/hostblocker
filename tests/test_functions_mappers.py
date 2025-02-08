@@ -45,6 +45,17 @@ def test_remove_ip_zero(line_in: str, line_out: str) -> None:
 
 
 @pytest.mark.parametrize(('line_in', 'line_out'), [
+    (':: localhost example.com', ' localhost example.com'),
+    ('::  localhost', '  localhost'),
+    (':: example.com  ', ' example.com  '),
+    ('::example.com', 'example.com'),
+    (':1:1 example.com', ':1:1 example.com'),
+])
+def test_remove_ipv6_zero(line_in: str, line_out: str) -> None:
+    assert hostblocker.functions.mappers.remove_ipv6_zero(line_in) == line_out
+
+
+@pytest.mark.parametrize(('line_in', 'line_out'), [
     ('.example.com', 'example.com'),
     ('example.com', 'example.com'),
 ])

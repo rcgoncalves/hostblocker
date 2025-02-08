@@ -99,6 +99,7 @@ sources:
       score: 15
       mappers:
           - 'remove_ip_zero'
+          - 'remove_ipv6_zero'
     ## AdBlock
     - url: 'https://raw.githubusercontent.com/genediazjr/nopelist/master/nopelist.txt'
       score: 15
