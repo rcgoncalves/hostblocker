@@ -24,6 +24,13 @@ The cache directory can be specified with the environment variable `HOSTBLOCKER_
 * [Issues](https://github.com/rcgoncalves/hostblocker/issues)
 
 
+## Installation
+This application can be installed from the source code using the command `python setup.py install`.
+This requires Python 3, and the Python packages `yaml`, `setuptools`, and `coverage`.
+
+Alternativlly, the packages can be installed with PIP.
+
+
 ## Usage
 The application supports the following options:
 - `-s`/`--source`: path to the YAML sources list.
