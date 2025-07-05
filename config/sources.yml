@@ -227,7 +227,7 @@ sources:
       score: 20
       mappers:
           - 'remove_adblock_text'
-    - url: 'https://github.com/AdguardTeam/AdguardFilters/blob/master/AnnoyancesFilter/Popups/sections/push-notifications_general.txt'
+    - url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/refs/heads/master/AnnoyancesFilter/Popups/sections/push-notifications_general.txt'
       score: 20
       mappers:
           - 'remove_adblock_text'

@@ -1,6 +1,7 @@
 # Changelog
 
 ## [Unreleased]
+- Fix source list URL.
 
 ## [2.1.0] 2025-02-08
 ### Added
