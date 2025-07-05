@@ -1,6 +1,6 @@
 [tool.poetry]
 name = 'hostblocker'
-version = '2.1.0'
+version = '2.1.1'
 description = 'Host file domain blocker builder'
 license = 'GPL-3.0-or-later'
 authors = ['Rui Carlos Gonçalves <rcgoncalves.pt@gmail.com>']
