@@ -2,8 +2,15 @@
 
 ## [Unreleased]
 
+### Changed
+- Improve type hints.
+- Update dependencies.
+
 ## [2.1.1] 2025-07-05
+### Fixed
 - Fix source list URL.
+
+### Changed
 - Update dependencies.
 
 ## [2.1.0] 2025-02-08

@@ -14,6 +14,6 @@ poetry run coverage report -m
 
 ## Linting
 ```bash
-poetry run ruff check hostblocker/ tests/
-poetry run mypy hostblocker/ tests/
+poetry run ruff check
+poetry run mypy
 ```

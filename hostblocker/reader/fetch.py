@@ -50,7 +50,7 @@ def get_lines_no_cache(url: str) -> list[bytes] | None:
                                  })
     try:
         data = urllib.request.urlopen(req, timeout=10)  # noqa: S310
-        lines = data.readlines()
+        lines: list[bytes] | None = data.readlines()
     except (OSError, urllib.request.HTTPError):
         logging.exception('error fetching data from URL %s', url)
         lines = None

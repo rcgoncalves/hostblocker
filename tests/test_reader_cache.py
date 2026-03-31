@@ -1,6 +1,8 @@
 import hashlib
 import os
 import sys
+from mockito import when, unstub  # type: ignore[import-untyped]
+from mockito.matchers import ANY  # type: ignore[import-untyped]
 from typing import Final
 
 import hostblocker.reader.cache
@@ -36,3 +38,15 @@ def test_read_cache_fail() -> None:
 def test_write_cache_fail() -> None:
     hostblocker.reader.cache.CACHE_DIR = '/xpto/abc'
     assert not hostblocker.reader.cache.write(URL, [b'x', b'y'])
+
+
+def test_read_cache_oserror() -> None:
+    when(os.path).exists(ANY).thenReturn(True)
+    when(os).stat(ANY).thenRaise(OSError())
+
+    lines = hostblocker.reader.cache.read(URL, 1)
+
+    assert lines is None
+
+    unstub(os)
+    unstub(os.path)

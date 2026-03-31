@@ -138,14 +138,14 @@ def process_lines(
         except AttributeError:
             logging.warning('invalid mapper: %s', mapper)
             mappers.remove(mapper)
-    logging.debug('mappers: %s', str(mappers))
+    logging.debug('mappers: %s', mappers)
     for filterr in filters[:]:
         try:
             getattr(hostblocker.functions.filters, filterr)
         except AttributeError:
             logging.warning('invalid filter: %s', filterr)
             filters.remove(filterr)
-    logging.debug('filters: %s', str(filters))
+    logging.debug('filters: %s', filters)
     count = 0
     for line in lines:
         line_str = line.decode('latin1').strip()

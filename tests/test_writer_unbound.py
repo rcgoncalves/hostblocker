@@ -8,16 +8,24 @@ from hostblocker.writer.unbound import ZONE_TYPE
 
 
 DIR_PATH: Final[str] = os.path.dirname(os.path.abspath(__file__))
-HOSTS: Final[list[str]] = ['example.com', 'x.example.com', 'y.example.com', 'example.net',
-                           'x.example.net', 'y.example.net', 'z.example.net', 'example.org']
-HOSTS_WRITE: Final[list[str]] = ['    local-zone: "example.com" ' + ZONE_TYPE,
-                                 '    local-data: "example.com' + SOA_DATA + '"',
-                                 '    local-zone: "example.net" ' + ZONE_TYPE,
-                                 '    local-data: "example.net' + SOA_DATA + '"',
-                                 '    local-zone: "example.org" ' + ZONE_TYPE,
-                                 '    local-data: "example.org' + SOA_DATA + '"']
-HEADER: Final[list[str]] = ['127.0.0.1 localhost localhost.local', '1.2.3.4   example.com',
-                            '1.2.3.4   app.example.com']
+HOSTS: Final[list[str]] = [
+    'example.com', 'x.example.com', 'y.example.com',
+    'example.net', 'x.example.net', 'y.example.net', 'z.example.net',
+    'example.org',
+]
+HOSTS_WRITE: Final[list[str]] = [
+    '    local-zone: "example.com" ' + ZONE_TYPE,
+    '    local-data: "example.com' + SOA_DATA + '"',
+    '    local-zone: "example.net" ' + ZONE_TYPE,
+    '    local-data: "example.net' + SOA_DATA + '"',
+    '    local-zone: "example.org" ' + ZONE_TYPE,
+    '    local-data: "example.org' + SOA_DATA + '"',
+]
+HEADER: Final[list[str]] = [
+    '127.0.0.1 localhost localhost.local',
+    '1.2.3.4   example.com',
+    '1.2.3.4   app.example.com',
+]
 
 
 def test_write_hosts_list() -> None:
