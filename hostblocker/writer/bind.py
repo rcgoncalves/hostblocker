@@ -1,6 +1,6 @@
 import logging
 
-from typing import TextIO, Final
+from typing import Final, IO
 
 from hostblocker.writer import APP_HEADER
 
@@ -41,7 +41,7 @@ def write(
 
 def write_header(
         header: str,
-        file: TextIO) -> int:
+        file: IO[str]) -> int:
     """
     Writes the header to the file.
 
@@ -63,7 +63,7 @@ def write_header(
 
 def write_hosts_list(
         hosts_list: list[str],
-        file: TextIO) -> int:
+        file: IO[str]) -> int:
     """
     Writes the list of hosts to a file.
 
@@ -80,7 +80,7 @@ def write_hosts_list(
             else:
                 if len(pending) >= WILDCARD_MIN_DOMAINS:
                     # Replace pending with wildcard.
-                    logging.info('use wildcard *.%s for %s', prev, str(pending))
+                    logging.info('use wildcard *.%s for %s', prev, pending)
                     file.write(f'*.{prev} CNAME .\n')
                 else:
                     # No wildcard replacement, so write pending hosts.
@@ -91,7 +91,7 @@ def write_hosts_list(
                 file.write(f'{host} CNAME .\n')
         if len(pending) >= WILDCARD_MIN_DOMAINS:
             # Replace pending with wildcard.
-            logging.info('use wildcard *.%s for %s', prev, str(pending))
+            logging.info('use wildcard *.%s for %s', prev, pending)
             file.write(f'*.{prev} CNAME .\n')
         else:
             # No wildcard replacement, so write pending hosts.

@@ -8,8 +8,11 @@ import hostblocker.writer.hosts
 DIR_PATH: Final[str] = os.path.dirname(os.path.abspath(__file__))
 HOSTS: Final[list[str]] = ['example.com', 'example.net', 'example.org']
 HOSTS_WRITE: Final[list[str]] = ['0.0.0.0 example.com', '0.0.0.0 example.net', '0.0.0.0 example.org']
-HEADER: Final[list[str]] = ['127.0.0.1 localhost localhost.local',
-                            '1.2.3.4   example.com', '1.2.3.4   app.example.com']
+HEADER: Final[list[str]] = [
+    '127.0.0.1 localhost localhost.local',
+    '1.2.3.4   example.com',
+    '1.2.3.4   app.example.com',
+]
 
 
 def test_write_hosts_list() -> None:
@@ -47,7 +50,7 @@ def test_write() -> None:
         hostblocker.writer.hosts.write(HOSTS, DIR_PATH + '/resources/header.txt', file.name)
         lines = file.readlines()
     assert len(lines) == 11
-    assert lines[0] == hostblocker.writer.hosts.APP_HEADER
+    assert lines[0] == hostblocker.writer.APP_HEADER
     assert lines[1].startswith('### BEGIN')
     assert list(map(str.strip, lines[2:5])) == HEADER
     assert lines[5].startswith('### END')

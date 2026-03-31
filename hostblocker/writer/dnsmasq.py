@@ -1,6 +1,6 @@
 import logging
 
-from typing import TextIO
+from typing import IO
 
 from hostblocker.writer import APP_HEADER
 
@@ -37,7 +37,7 @@ def write(
 
 def write_header(
         header: str,
-        file: TextIO) -> int:
+        file: IO[str]) -> int:
     """
     Writes the header to the file.
 
@@ -59,7 +59,7 @@ def write_header(
 
 def write_hosts_list(
         hosts_list: list[str],
-        file: TextIO) -> int:
+        file: IO[str]) -> int:
     """
     Writes the list of hosts to a file.
 

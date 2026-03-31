@@ -15,5 +15,5 @@ XML_TAG_MATCH = re.compile(r'<[^>]*>')
 DOMAIN_SEG_MATCH = re.compile(r'^(?!-)[_a-zA-Z\d-]{1,63}(?<!-)$')
 DOMAIN_ALPHA = re.compile(r'[a-zA-Z]')
 
-# init regez for IP addresses
+# init regex for IP addresses
 IP = re.compile(r'^\d+.\d+.\d+.\d+$')
