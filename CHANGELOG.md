@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+## [2.1.2] 2026-03-31
 ### Changed
 - Improve type hints.
 - Update dependencies.
