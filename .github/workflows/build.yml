@@ -6,6 +6,9 @@ on:
       - '**'
       - '!main'
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: 'Build'
@@ -33,5 +36,5 @@ jobs:
           poetry run coverage report -m
       - name: 'Run linter'
         run: |
-          poetry run ruff check hostblocker/ tests/
-          poetry run mypy hostblocker/ tests/
+          poetry run ruff check
+          poetry run mypy
