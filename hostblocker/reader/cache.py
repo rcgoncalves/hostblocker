@@ -46,6 +46,7 @@ def read(
      for the resource or an error occurs.
     """
     cache_file = CACHE_DIR + '/' + get_resource_id(resource)
+    lines = None
     try:
         if not os.path.exists(cache_file):
             expired = True
@@ -53,9 +54,7 @@ def read(
             age = (time.time() - os.stat(cache_file).st_mtime) / 3600
             expired = age > cache
             logging.debug('cache expired? %s (age: %d)', expired, age)
-        if expired:
-            lines = None
-        else:
+        if not expired:
             with open(cache_file, 'rb') as file:
                 lines = file.readlines()
     except OSError:

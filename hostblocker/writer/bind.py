@@ -71,33 +71,38 @@ def write_hosts_list(
     :param file: the output file.
     :return: 0 if no error occurred; 1 if there was an IO error.
     """
-    prev = '<invalid>'
+    prev_host = '<invalid>'
     pending = []
     try:
         for host in hosts_list:
-            if host.endswith(prev):
+            if host.endswith(prev_host):
                 pending.append(host)
             else:
-                if len(pending) >= WILDCARD_MIN_DOMAINS:
-                    # Replace pending with wildcard.
-                    logging.info('use wildcard *.%s for %s', prev, pending)
-                    file.write(f'*.{prev} CNAME .\n')
-                else:
-                    # No wildcard replacement, so write pending hosts.
-                    for pending_host in pending:
-                        file.write(f'{pending_host} CNAME .\n')
-                pending = []
-                prev = host
+                flush_pending(prev_host, pending, file)
                 file.write(f'{host} CNAME .\n')
-        if len(pending) >= WILDCARD_MIN_DOMAINS:
-            # Replace pending with wildcard.
-            logging.info('use wildcard *.%s for %s', prev, pending)
-            file.write(f'*.{prev} CNAME .\n')
-        else:
-            # No wildcard replacement, so write pending hosts.
-            for pending_host in pending:
-                file.write(f'{pending_host} CNAME .\n')
+                pending = []
+                prev_host = host
+        flush_pending(prev_host, pending, file)
     except OSError:
         logging.exception('IO error writing hosts list')
         return 1
     return 0
+
+
+def flush_pending(host: str, pending: list[str], file: IO[str]) -> None:
+    """
+    Writes the pending hosts to a file, deciding whether wildcard should be used or not.
+
+    :param host: the base host.
+    :param pending: the list of pending hosts.
+    :param file: the output file.
+    :return:
+    """
+    if len(pending) >= WILDCARD_MIN_DOMAINS:
+        # Replace pending with wildcard.
+        logging.info('use wildcard *.%s for %s', host, pending)
+        file.write(f'*.{host} CNAME .\n')
+    else:
+        # No wildcard replacement, so write pending hosts.
+        for pending_host in pending:
+            file.write(f'{pending_host} CNAME .\n')

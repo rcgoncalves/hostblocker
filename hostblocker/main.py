@@ -76,9 +76,9 @@ def main() -> int:
 
     :return:
     0 in case of success.
-    2 if the options specified are not valid
+    2 if the options specified are not valid.
     3 if there was an error reading the YAML config file.
-    4 if the output format is invalid
+    4 if the output format is invalid.
     """
     args = init_args()
     init_logging(args.debug)
