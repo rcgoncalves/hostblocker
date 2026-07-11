@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='HostBlocker',
-    version='2.1.2',
+    version='2.1.3',
     description='Host file domain blocker builder',
     author='Rui Carlos Goncalves',
     author_email='rcgoncalves.pt@gmail.com',

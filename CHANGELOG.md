@@ -1,13 +1,18 @@
 # Changelog
 
 ## [Unreleased]
+
+
+## [2.1.3] 2026-07-11
 ### Changed
 - Update dependencies.
+
 
 ## [2.1.2] 2026-03-31
 ### Changed
 - Improve type hints.
 - Update dependencies.
+
 
 ## [2.1.1] 2025-07-05
 ### Fixed
@@ -15,6 +20,7 @@
 
 ### Changed
 - Update dependencies.
+
 
 ## [2.1.0] 2025-02-08
 ### Added
@@ -25,12 +31,14 @@
 ### Fixed
 - Fix bug handling IPv6 in a blocklist.
 
+
 ## [2.0.0] - 2024-05-28
 ### Changed
 - Migrate to Poetry.
 
 ### Removed
 - Remove `setup.py`.
+
 
 ## [1.4.3] - 2019-07-19
 ### Changed
