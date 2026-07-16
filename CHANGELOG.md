@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+### Changed
+- Improve project development configurations.
 
 
 ## [2.1.3] 2026-07-11

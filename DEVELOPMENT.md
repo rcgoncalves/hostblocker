@@ -3,7 +3,7 @@
 ## TODO
 - Add support to `Last-Modified` HTTP header when using cache.
 - Check if domains are still active.
-- Improve source lists encoding support (namely, allow compressed files).
+- Improve source lists encoding support (e.g., allow compressed files).
 
 ## Tests
 ```bash
