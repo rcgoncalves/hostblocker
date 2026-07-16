@@ -1,6 +1,9 @@
 # Changelog
 
 ## [Unreleased]
+
+
+## [2.1.4] 2026-07-16
 ### Changed
 - Improve project development configurations.
 
