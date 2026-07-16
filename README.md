@@ -26,9 +26,9 @@ The cache directory can be specified with the environment variable `HOSTBLOCKER_
 
 ## Installation
 This application can be installed from the source code using the command `python setup.py install`.
-This requires Python 3, and the Python packages `yaml`, `setuptools`, and `coverage`.
+This requires Python 3, and the Python packages `yaml` and `setuptools`.
 
-Alternativlly, the packages can be installed with PIP.
+Alternatively, the packages can be installed with PIP.
 
 
 ## Usage
@@ -72,7 +72,7 @@ These functions are applied after the functions specific to the source list.
 ## License
 HostBlocker, a domain blocker file builder
 
-Copyright (C) 2017-2025 Rui Carlos Gonçalves
+Copyright (C) 2017-2026 Rui Carlos Gonçalves
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
